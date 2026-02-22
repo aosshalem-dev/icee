@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IASA — Investing in Israel's Future</title>
+<style>
+  /* ── Reset & Base ───────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; overflow: hidden; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+
+  /* ── Slide Container ────────────────────────────── */
+  .deck { position: relative; width: 100vw; height: 100vh; }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    padding: 6vh 8vw;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.7s ease;
+    overflow-y: auto;
+  }
+  .slide.active {
+    opacity: 1; visibility: visible;
+  }
+
+  /* ── Theme: Dark (charcoal hero) ───────────────── */
+  .slide--dark {
+    background: #1c1c1c;
+    color: #f5f0e8;
+  }
+  .slide--dark::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 120px; height: 2px;
+    background: linear-gradient(90deg, transparent, #b8860b, transparent);
+    pointer-events: none;
+  }
+
+  /* ── Theme: Light (warm ivory) ─────────────────── */
+  .slide--light {
+    background: #faf8f3;
+    color: #2c2c2c;
+  }
+
+  /* ── Theme: Accent (deep charcoal + gold) ──────── */
+  .slide--accent {
+    background: linear-gradient(160deg, #1c1c1c 0%, #2a2520 100%);
+    color: #f5f0e8;
+  }
+
+  /* ── Typography ─────────────────────────────────── */
+  .slide-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 0.4em;
+    letter-spacing: -0.01em;
+  }
+
+  .slide-subtitle {
+    font-size: clamp(1rem, 2.2vw, 1.6rem);
+    font-weight: 300;
+    opacity: 0.85;
+    line-height: 1.6;
+    max-width: 720px;
+    text-align: center;
+  }
+
+  .slide-body {
+    font-size: clamp(0.95rem, 1.6vw, 1.25rem);
+    line-height: 1.7;
+    max-width: 800px;
+    text-align: center;
+  }
+
+  .label {
+    font-size: clamp(0.7rem, 1vw, 0.85rem);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 500;
+    opacity: 0.5;
+    margin-bottom: 1em;
+  }
+
+  .highlight { color: #b8860b; }
+  .slide--dark .highlight { color: #d4a843; }
+  .slide--accent .highlight { color: #d4a843; }
+
+  /* ── Cards / Columns ────────────────────────────── */
+  .columns {
+    display: grid;
+    gap: 2rem;
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 1000px;
+  }
+  .columns--3 { grid-template-columns: repeat(3, 1fr); }
+  .columns--4 { grid-template-columns: repeat(4, 1fr); }
+  .columns--2 { grid-template-columns: repeat(2, 1fr); }
+
+  .card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-top: 2px solid #b8860b;
+    border-radius: 0;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: transform 0.2s;
+  }
+  .slide--light .card {
+    background: #fff;
+    border: 1px solid #e8e4db;
+    border-top: 2px solid #b8860b;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .card-icon {
+    font-size: 2.2rem;
+    margin-bottom: 0.8rem;
+    display: block;
+  }
+  .card-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    color: #b8860b;
+  }
+  .slide--dark .card-title,
+  .slide--accent .card-title { color: #d4a843; }
+  .card-text {
+    font-size: clamp(0.8rem, 1.1vw, 0.95rem);
+    opacity: 0.75;
+    line-height: 1.55;
+  }
+
+  /* ── Impact Numbers ─────────────────────────────── */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    width: 100%;
+    max-width: 960px;
+    margin-top: 2rem;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat-number {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 400;
+    color: #b8860b;
+    line-height: 1;
+    margin-bottom: 0.3em;
+  }
+  .slide--dark .stat-number { color: #d4a843; }
+  .stat-label {
+    font-size: clamp(0.8rem, 1.2vw, 1rem);
+    opacity: 0.7;
+    font-weight: 500;
+  }
+  .stat-detail {
+    font-size: clamp(0.7rem, 0.9vw, 0.8rem);
+    opacity: 0.5;
+    margin-top: 0.3em;
+  }
+
+  /* ── Pipeline (vertical timeline) ──────────────── */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 600px;
+  }
+  .timeline-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    position: relative;
+    padding-bottom: 2rem;
+  }
+  .timeline-step:last-child { padding-bottom: 0; }
+  .timeline-marker {
+    flex-shrink: 0;
+    width: 14px; height: 14px;
+    background: #b8860b;
+    border-radius: 50%;
+    margin-top: 0.3rem;
+    position: relative;
+    z-index: 1;
+  }
+  .timeline-step:not(:last-child) .timeline-marker::after {
+    content: '';
+    position: absolute;
+    top: 14px; left: 50%;
+    transform: translateX(-50%);
+    width: 1px; height: calc(100% + 2rem - 14px);
+    background: rgba(184,134,11,0.3);
+  }
+  /* Make the ::after tall enough to connect to the next dot */
+  .timeline-step { position: relative; }
+  .timeline-step:not(:last-child) .timeline-marker::after {
+    height: 3rem;
+  }
+  .timeline-content {}
+  .timeline-num {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: #b8860b;
+    line-height: 1;
+  }
+  .timeline-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(0.95rem, 1.3vw, 1.1rem);
+    font-weight: 400;
+    margin-top: 0.15rem;
+    color: #2c2c2c;
+  }
+  .timeline-text {
+    font-size: clamp(0.8rem, 1vw, 0.9rem);
+    color: #64748b;
+    margin-top: 0.25rem;
+    line-height: 1.5;
+  }
+
+  /* ── Quote ──────────────────────────────────────── */
+  .quote {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    font-style: italic;
+    line-height: 1.7;
+    max-width: 700px;
+    text-align: center;
+    position: relative;
+    padding: 0 2rem;
+  }
+  .quote::before {
+    content: '\201C';
+    font-size: 5rem;
+    position: absolute;
+    left: -0.5rem;
+    top: -1.5rem;
+    opacity: 0.15;
+    font-style: normal;
+    color: #d4a843;
+  }
+  .quote-attr {
+    margin-top: 1rem;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: clamp(0.85rem, 1.2vw, 1rem);
+    font-style: normal;
+    font-weight: 500;
+    opacity: 0.6;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Numbered Points ────────────────────────────── */
+  .numbered-list {
+    list-style: none;
+    max-width: 700px;
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+  .numbered-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+    font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+    line-height: 1.6;
+  }
+  .num-badge {
+    flex-shrink: 0;
+    width: 2.2rem; height: 2.2rem;
+    background: transparent;
+    color: #b8860b;
+    border: 2px solid #b8860b;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 400;
+    font-size: 0.95rem;
+  }
+  .slide--dark .num-badge {
+    color: #d4a843;
+    border-color: #d4a843;
+  }
+
+  /* ── Principles ─────────────────────────────────── */
+  .principles {
+    display: flex;
+    gap: 2.5rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .principle {
+    text-align: center;
+    min-width: 140px;
+  }
+  .principle-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.8;
+  }
+  .principle-name {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(0.95rem, 1.3vw, 1.1rem);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Expansion Map ──────────────────────────────── */
+  .expansion-visual {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .campus-box {
+    padding: 2rem 2.5rem;
+    border-radius: 0;
+    text-align: center;
+    min-width: 220px;
+  }
+  .campus-box--north {
+    background: #faf8f3;
+    border: 1px solid #e8e4db;
+    border-top: 2px solid #b8860b;
+  }
+  .campus-box--south {
+    background: #faf8f3;
+    border: 1px solid #e8e4db;
+    border-top: 2px solid #d4a843;
+  }
+  .campus-name {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: #2c2c2c;
+  }
+  .campus-detail {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-top: 0.3rem;
+  }
+  .expansion-plus {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    color: #b8860b;
+    opacity: 0.6;
+  }
+
+  /* ── Progress Bar (top, gold) ───────────────────── */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #b8860b, #d4a843);
+    transition: width 0.4s ease;
+    z-index: 100;
+  }
+
+  /* ── Slide Counter ──────────────────────────────── */
+  .slide-counter {
+    position: fixed;
+    bottom: 12px; right: 20px;
+    font-size: 0.8rem;
+    font-family: Georgia, 'Times New Roman', serif;
+    color: rgba(128,128,128,0.4);
+    z-index: 100;
+    user-select: none;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Nav Hint ───────────────────────────────────── */
+  .nav-hint {
+    position: fixed;
+    bottom: 12px; left: 20px;
+    font-size: 0.75rem;
+    color: rgba(128,128,128,0.35);
+    z-index: 100;
+    user-select: none;
+    transition: opacity 1s;
+  }
+
+  /* ── Decorative Divider (thin gold rule) ────────── */
+  .divider {
+    width: 60px; height: 1px;
+    background: #b8860b;
+    margin: 1rem 0;
+  }
+  .slide--dark .divider { background: #d4a843; }
+
+  /* ── Responsive ─────────────────────────────────── */
+  @media (max-width: 768px) {
+    .slide { padding: 4vh 6vw; }
+    .columns--3, .columns--4, .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .expansion-visual { flex-direction: column; }
+  }
+  @media (max-width: 480px) {
+    .columns--3, .columns--4, .columns--2, .stat-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── Print ──────────────────────────────────────── */
+  @media print {
+    html, body { overflow: visible; height: auto; }
+    .deck { height: auto; }
+    .slide {
+      position: relative;
+      opacity: 1 !important; visibility: visible !important;
+      transform: none !important;
+      page-break-after: always;
+      min-height: 100vh;
+    }
+    .progress-bar, .slide-counter, .nav-hint { display: none; }
+    .slide--dark, .slide--accent { color: #2c2c2c; background: #fff !important; }
+    .slide--dark .stat-number, .slide--accent .stat-number { color: #8b6914; }
+    .slide--dark .highlight, .slide--accent .highlight { color: #8b6914; }
+    .card { border: 1px solid #ccc; background: #f9f9f9 !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- ═══════ SLIDE 1 — Cover ═══════ -->
+  <div class="slide slide--dark active" data-slide="0">
+    <div class="label">The Israel Center for Excellence through Education</div>
+    <h1 class="slide-title" style="text-align:center;">Investing in<br>Israel's <span class="highlight">Future</span></h1>
+    <div class="divider"></div>
+    <p class="slide-subtitle">A partnership with the Israel-America Schools Association<br>to develop Israel's next generation of exceptional leaders</p>
+  </div>
+
+  <!-- ═══════ SLIDE 2 — The Need ═══════ -->
+  <div class="slide slide--light" data-slide="1">
+    <div class="label">The Need</div>
+    <h2 class="slide-title">Israel's greatest resource:<br><span class="highlight">exceptional minds</span></h2>
+    <div class="divider"></div>
+    <p class="slide-body">
+      Israel's future depends on identifying and developing its most talented young people —
+      not just academically, but as leaders who will drive the country's scientific, cultural,
+      and ethical advancement. Yet many of these students, especially in the geographic and
+      social periphery, never get the opportunity to reach their full potential.
+    </p>
+  </div>
+
+  <!-- ═══════ SLIDE 3 — Proven Model ═══════ -->
+  <div class="slide slide--light" data-slide="2">
+    <div class="label">A Proven Model</div>
+    <h2 class="slide-title">Three pillars of <span class="highlight">excellence</span></h2>
+    <div class="divider"></div>
+    <div class="columns columns--3">
+      <div class="card">
+        <span class="card-icon">&#127891;</span>
+        <div class="card-title">Academic Excellence</div>
+        <div class="card-text">
+          Rigorous curriculum that pushes students beyond standard education,
+          with individualized mentorship and advanced coursework.
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-icon">&#127793;</span>
+        <div class="card-title">Entrepreneurial Leadership</div>
+        <div class="card-text">
+          Real-world projects, community initiatives, and leadership training
+          that build the skills to create change.
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-icon">&#128300;</span>
+        <div class="card-title">Research &amp; Innovation</div>
+        <div class="card-text">
+          Students engage in original research from an early age,
+          developing scientific thinking and creative problem-solving.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 4 — Founder Story ═══════ -->
+  <div class="slide slide--dark" data-slide="3">
+    <div class="label">Our Foundation</div>
+    <h2 class="slide-title" style="margin-bottom:1rem;">A vision of <span class="highlight">service</span></h2>
+    <div class="quote">
+      We believed that Israel's greatest contribution to the world would come from
+      investing in its most promising young people — and giving them the values
+      to use their talents for the common good.
+      <div class="quote-attr">— Bob Asher, Founding Chairman</div>
+    </div>
+    <div class="principles">
+      <div class="principle">
+        <div class="principle-icon">&#9733;</div>
+        <div class="principle-name">Excellence</div>
+      </div>
+      <div class="principle">
+        <div class="principle-icon">&#9878;</div>
+        <div class="principle-name">Leadership</div>
+      </div>
+      <div class="principle">
+        <div class="principle-icon">&#9829;</div>
+        <div class="principle-name">Service</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 5 — Impact Numbers ═══════ -->
+  <div class="slide slide--light" data-slide="4">
+    <div class="label">Impact by the Numbers</div>
+    <h2 class="slide-title">Measured <span class="highlight">impact</span></h2>
+    <div class="divider"></div>
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="stat-number" data-target="450" data-suffix="">0</div>
+        <div class="stat-label">Students</div>
+        <div class="stat-detail">currently enrolled</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number" data-target="100" data-suffix="">0</div>
+        <div class="stat-label">Graduates</div>
+        <div class="stat-detail">each year</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number" data-target="2400" data-suffix="" data-format="comma">0</div>
+        <div class="stat-label">Alumni</div>
+        <div class="stat-detail">leading across sectors</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number" data-target="200" data-suffix="+">0</div>
+        <div class="stat-label">Communities</div>
+        <div class="stat-detail">represented nationwide</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 6 — Selection Process (vertical timeline) ═══════ -->
+  <div class="slide slide--light" data-slide="5">
+    <div class="label">How We Find Them</div>
+    <h2 class="slide-title">A rigorous <span class="highlight">selection</span> process</h2>
+    <div class="divider"></div>
+    <div class="timeline">
+      <div class="timeline-step">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <div class="timeline-num">Step 1</div>
+          <div class="timeline-title">Scouting</div>
+          <div class="timeline-text">Nationwide talent identification in every community</div>
+        </div>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <div class="timeline-num">Step 2</div>
+          <div class="timeline-title">Assessment</div>
+          <div class="timeline-text">Multi-dimensional evaluation beyond test scores</div>
+        </div>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <div class="timeline-num">Step 3</div>
+          <div class="timeline-title">Selection</div>
+          <div class="timeline-text">Committee review for potential, character &amp; drive</div>
+        </div>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <div class="timeline-num">Step 4</div>
+          <div class="timeline-title">Enrollment</div>
+          <div class="timeline-text">Full scholarship including housing &amp; mentorship</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 7 — Expansion Vision ═══════ -->
+  <div class="slide slide--light" data-slide="6">
+    <div class="label">Looking Ahead</div>
+    <h2 class="slide-title">Expanding our <span class="highlight">reach</span></h2>
+    <div class="divider"></div>
+    <p class="slide-body" style="margin-bottom:0.5rem;">
+      Growing from a single campus to a national network,
+      reaching students in every corner of Israel.
+    </p>
+    <div class="expansion-visual">
+      <div class="campus-box campus-box--north">
+        <div style="font-size:2rem;margin-bottom:0.4rem;">&#127979;</div>
+        <div class="campus-name">Northern Campus</div>
+        <div class="campus-detail">Serving the Galilee &amp; northern periphery</div>
+      </div>
+      <div class="expansion-plus">+</div>
+      <div class="campus-box campus-box--south">
+        <div style="font-size:2rem;margin-bottom:0.4rem;">&#127979;</div>
+        <div class="campus-name">Southern Campus</div>
+        <div class="campus-detail">Serving the Negev &amp; southern communities</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 8 — R&D / E2K ═══════ -->
+  <div class="slide slide--dark" data-slide="7">
+    <div class="label">Innovation in Education</div>
+    <h2 class="slide-title">R&amp;D: <span class="highlight">E2K</span> Education Lab</h2>
+    <div class="divider"></div>
+    <div class="columns columns--2" style="max-width:800px;">
+      <div class="card">
+        <span class="card-icon">&#128218;</span>
+        <div class="card-title">Curriculum Innovation</div>
+        <div class="card-text">
+          Our E2K lab develops proprietary teaching methodologies
+          that are tested, refined, and proven in our own classrooms
+          before being shared.
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-icon">&#127758;</span>
+        <div class="card-title">Global Adoption</div>
+        <div class="card-text">
+          Singapore's Ministry of Education adopted our gifted-education
+          methodology — validating it as a world-class model that
+          scales across cultures.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 9 — Path to the Future ═══════ -->
+  <div class="slide slide--light" data-slide="8">
+    <div class="label">Our Mission</div>
+    <h2 class="slide-title">A path to <span class="highlight">scientific, cultural<br>&amp; ethical</span> excellence</h2>
+    <div class="divider"></div>
+    <p class="slide-body">
+      We don't just educate students — we shape citizens.
+      Our graduates leave with the academic depth to lead in research and industry,
+      the cultural literacy to bridge divides in Israeli society,
+      and the ethical foundation to use their influence for the greater good.
+    </p>
+  </div>
+
+  <!-- ═══════ SLIDE 10 — Why Now ═══════ -->
+  <div class="slide slide--light" data-slide="9">
+    <div class="label">Urgency</div>
+    <h2 class="slide-title">Why <span class="highlight">now</span></h2>
+    <div class="divider"></div>
+    <ul class="numbered-list">
+      <li>
+        <span class="num-badge">1</span>
+        <span><strong>A critical moment for Israel</strong> — the country needs its best minds more than ever, and the periphery remains dramatically underserved in gifted education.</span>
+      </li>
+      <li>
+        <span class="num-badge">2</span>
+        <span><strong>Expansion is ready</strong> — the model is proven, the demand is overwhelming, and new campuses in the North and South are within reach with the right investment.</span>
+      </li>
+      <li>
+        <span class="num-badge">3</span>
+        <span><strong>Legacy opportunity</strong> — founding donors will be permanently associated with a transformative institution at a pivotal point in its growth.</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- ═══════ SLIDE 11 — Call to Action ═══════ -->
+  <div class="slide slide--accent" data-slide="10">
+    <div class="label">Get Involved</div>
+    <h2 class="slide-title">Building a new<br><span class="highlight">board of partners</span></h2>
+    <div class="divider" style="background:#d4a843;"></div>
+    <p class="slide-subtitle">
+      We are assembling a founding cohort of American partners
+      who share our belief in excellence, leadership, and service.
+    </p>
+    <div class="columns columns--3" style="margin-top:2rem;">
+      <div class="card">
+        <span class="card-icon">&#128176;</span>
+        <div class="card-title">Invest</div>
+        <div class="card-text">Fund scholarships and campus expansion directly</div>
+      </div>
+      <div class="card">
+        <span class="card-icon">&#129309;</span>
+        <div class="card-title">Connect</div>
+        <div class="card-text">Introduce us to aligned donors and organizations</div>
+      </div>
+      <div class="card">
+        <span class="card-icon">&#128161;</span>
+        <div class="card-title">Advise</div>
+        <div class="card-text">Join our advisory board and shape the expansion strategy</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SLIDE 12 — Closing ═══════ -->
+  <div class="slide slide--dark" data-slide="11">
+    <h2 class="slide-title" style="text-align:center;">One exceptional mind<br>at a time.</h2>
+    <div class="divider"></div>
+    <p class="slide-subtitle">
+      The Israel Center for Excellence through Education
+    </p>
+  </div>
+
+</div>
+
+<!-- ── Progress Bar (top) ───────────────────────────── -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- ── Slide Counter ──────────────────────────────── -->
+<div class="slide-counter" id="slideCounter">1 / 12</div>
+
+<!-- ── Nav Hint ───────────────────────────────────── -->
+<div class="nav-hint" id="navHint">&#8592; &#8594; arrow keys &middot; click to advance</div>
+
+<script>
+(function () {
+  var slides  = document.querySelectorAll('.slide');
+  var total   = slides.length;
+  var bar     = document.getElementById('progressBar');
+  var counter = document.getElementById('slideCounter');
+  var hint    = document.getElementById('navHint');
+  var current = 0;
+  var animating = false;
+
+  function updateUI() {
+    bar.style.width = ((current + 1) / total * 100) + '%';
+    counter.textContent = (current + 1) + ' / ' + total;
+  }
+
+  function goTo(index) {
+    if (index < 0 || index >= total || index === current || animating) return;
+    animating = true;
+    var prev = slides[current];
+    var next = slides[index];
+
+    // Fade transition only
+    prev.classList.remove('active');
+    void next.offsetWidth;
+    next.classList.add('active');
+
+    current = index;
+    updateUI();
+    animateNumbers();
+
+    setTimeout(function () {
+      animating = false;
+    }, 700);
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp')  { e.preventDefault(); prev(); }
+    if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+    if (e.key === 'End')  { e.preventDefault(); goTo(total - 1); }
+    if (hint.style.opacity !== '0') hint.style.opacity = '0';
+  });
+
+  // Click navigation (left third = prev, rest = next)
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('a, button')) return;
+    if (e.clientX < window.innerWidth / 3) prev(); else next();
+    if (hint.style.opacity !== '0') hint.style.opacity = '0';
+  });
+
+  // Touch swipe
+  var touchStartX = 0;
+  document.addEventListener('touchstart', function (e) { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', function (e) {
+    var diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) { diff > 0 ? next() : prev(); }
+  });
+
+  // Animated number counters
+  function animateNumbers() {
+    var activeSlide = slides[current];
+    var nums = activeSlide.querySelectorAll('.stat-number[data-target]');
+    nums.forEach(function (el) {
+      if (el.dataset.animated === 'true') return;
+      el.dataset.animated = 'true';
+      var target = parseInt(el.dataset.target, 10);
+      var suffix = el.dataset.suffix || '';
+      var useComma = el.dataset.format === 'comma';
+      var duration = 1200;
+      var start = performance.now();
+      function tick(now) {
+        var elapsed = now - start;
+        var progress = Math.min(elapsed / duration, 1);
+        var eased = 1 - Math.pow(1 - progress, 3);
+        var value = Math.round(eased * target);
+        el.textContent = (useComma ? value.toLocaleString() : value) + suffix;
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  // Init
+  updateUI();
+  animateNumbers();
+
+  // Hide hint after 5s
+  setTimeout(function () { hint.style.opacity = '0'; }, 5000);
+})();
+</script>
+
+</body>
+</html>
