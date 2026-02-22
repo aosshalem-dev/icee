@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ICEE — תוכנית פעולה</title>
+<style>
+  :root {
+    --blue: #1a56db;
+    --blue-light: #e8effc;
+    --orange: #e67e22;
+    --orange-light: #fef3e6;
+    --green: #27ae60;
+    --green-light: #e8f8ef;
+    --red: #c0392b;
+    --red-light: #fde8e6;
+    --purple: #8e44ad;
+    --purple-light: #f3e8f9;
+    --teal: #00897b;
+    --teal-light: #e0f2f1;
+    --gray: #636e72;
+    --gray-light: #f5f6fa;
+    --bg: #fafbfd;
+    --card-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    --chicago: #1a56db;
+    --alumni: #27ae60;
+    --foundations: #8e44ad;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    background: var(--bg);
+    color: #2d3436;
+    line-height: 1.7;
+    padding: 0;
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    background: linear-gradient(135deg, #1a237e 0%, #0d47a1 50%, #1565c0 100%);
+    color: white;
+    padding: 2.5rem 2rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    position: relative;
+  }
+
+  header .subtitle {
+    font-size: 1rem;
+    opacity: 0.8;
+    font-weight: 300;
+    position: relative;
+  }
+
+  header .meta {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    font-size: 0.8rem;
+    opacity: 0.6;
+    position: relative;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  /* ===== SUMMARY ===== */
+  .summary {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem 1.8rem;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+
+  .summary-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--blue-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  .summary-text p {
+    color: #555;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .summary-text .cost-tag {
+    display: inline-block;
+    background: var(--green-light);
+    color: var(--green);
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-top: 0.3rem;
+  }
+
+  /* ===== TRACK OVERVIEW CARDS ===== */
+  .tracks-overview {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .track-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    padding: 1.3rem;
+    border-top: 4px solid;
+    text-align: center;
+  }
+
+  .track-card.chicago { border-top-color: var(--chicago); }
+  .track-card.alumni { border-top-color: var(--alumni); }
+  .track-card.foundations { border-top-color: var(--foundations); }
+
+  .track-card .track-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 0 auto 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+  }
+
+  .track-card.chicago .track-icon { background: var(--blue-light); }
+  .track-card.alumni .track-icon { background: var(--green-light); }
+  .track-card.foundations .track-icon { background: var(--purple-light); }
+
+  .track-card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    color: #333;
+  }
+
+  .track-card .track-goal {
+    font-size: 0.82rem;
+    color: #888;
+    line-height: 1.5;
+  }
+
+  /* ===== SECTION HEADERS ===== */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 1.2rem;
+    margin-top: 0.5rem;
+  }
+
+  .section-header .sec-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .section-header h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #333;
+  }
+
+  .section-header .sec-desc {
+    font-size: 0.85rem;
+    color: #888;
+    margin-right: auto;
+  }
+
+  /* ===== OPERATIONS TABLE ===== */
+  .ops-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .ops-card .card-header {
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .ops-card .card-header .card-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .ops-card .card-header h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #333;
+  }
+
+  .ops-card .card-header .card-desc {
+    font-size: 0.82rem;
+    color: #999;
+    margin-right: auto;
+  }
+
+  .ops-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+
+  .ops-table thead th {
+    padding: 0.7rem 1rem;
+    text-align: right;
+    font-weight: 700;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: #999;
+    border-bottom: 2px solid #f0f0f0;
+    background: #fafbfd;
+  }
+
+  .ops-table thead th:first-child {
+    width: 28%;
+  }
+
+  .ops-table thead th.col-chicago { color: var(--chicago); border-bottom-color: var(--chicago); }
+  .ops-table thead th.col-alumni { color: var(--alumni); border-bottom-color: var(--alumni); }
+  .ops-table thead th.col-foundations { color: var(--foundations); border-bottom-color: var(--foundations); }
+
+  .ops-table tbody td {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid #f5f5f5;
+    vertical-align: top;
+    color: #555;
+  }
+
+  .ops-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .ops-table tbody td:first-child {
+    font-weight: 600;
+    color: #333;
+  }
+
+  .ops-table .cell-icon {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 18px;
+    font-size: 0.6rem;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+
+  .ops-table .na {
+    color: #ccc;
+    font-style: italic;
+  }
+
+  .ops-table .highlight {
+    background: #fffde7;
+  }
+
+  /* ===== UNIQUE ITEMS PER TRACK ===== */
+  .unique-section {
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .unique-header {
+    padding: 0.9rem 1.5rem;
+    color: white;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .unique-header.bg-chicago { background: var(--chicago); }
+  .unique-header.bg-alumni { background: var(--alumni); }
+  .unique-header.bg-foundations { background: var(--foundations); }
+  .unique-header.bg-cross { background: var(--teal); }
+
+  .unique-body {
+    padding: 1rem 1.5rem;
+  }
+
+  .unique-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .unique-item:last-child { border-bottom: none; }
+
+  .unique-item .u-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .u-icon.build { background: var(--blue-light); }
+  .u-icon.human { background: var(--red-light); }
+  .u-icon.auto { background: var(--green-light); }
+  .u-icon.decide { background: var(--orange-light); }
+
+  .unique-item .u-text strong {
+    display: block;
+    font-size: 0.92rem;
+    color: #333;
+  }
+
+  .unique-item .u-text .u-detail {
+    font-size: 0.82rem;
+    color: #888;
+    margin-top: 2px;
+  }
+
+  /* ===== DECISIONS ===== */
+  .decisions {
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 2rem;
+    overflow: hidden;
+    border: 2px solid var(--orange);
+  }
+
+  .decisions-header {
+    background: var(--orange);
+    color: white;
+    padding: 0.9rem 1.5rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .decisions-body {
+    padding: 1.2rem 1.5rem;
+  }
+
+  .decision-item {
+    padding: 1rem;
+    margin-bottom: 0.8rem;
+    background: var(--orange-light);
+    border-radius: 8px;
+    border-right: 4px solid var(--orange);
+  }
+
+  .decision-item:last-child { margin-bottom: 0; }
+
+  .decision-item .q {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .decision-item .context {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+  }
+
+  .decision-item .options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+  }
+
+  .option-pill {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 0.8rem;
+    color: #555;
+  }
+
+  .option-pill.recommended {
+    border-color: var(--green);
+    color: var(--green);
+    font-weight: 600;
+  }
+
+  /* ===== COST BREAKDOWN ===== */
+  .cost-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .cost-header {
+    padding: 0.9rem 1.5rem;
+    background: var(--teal);
+    color: white;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .cost-body {
+    padding: 1.2rem 1.5rem;
+  }
+
+  .cost-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 0.9rem;
+  }
+
+  .cost-row:last-child { border-bottom: none; }
+
+  .cost-row .cost-label {
+    color: #555;
+  }
+
+  .cost-row .cost-amount {
+    font-weight: 700;
+    color: #333;
+  }
+
+  .cost-row.total {
+    border-top: 2px solid #e0e0e0;
+    margin-top: 0.3rem;
+    padding-top: 0.8rem;
+    font-size: 1rem;
+  }
+
+  .cost-row.total .cost-amount {
+    color: var(--green);
+    font-size: 1.1rem;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: #bbb;
+    font-size: 0.78rem;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 700px) {
+    .container { padding: 1rem; }
+    header { padding: 1.5rem 1rem; }
+    header h1 { font-size: 1.4rem; }
+    .tracks-overview { grid-template-columns: 1fr; }
+    .summary { flex-direction: column; }
+    .ops-table { font-size: 0.78rem; }
+    .ops-table thead th, .ops-table tbody td { padding: 0.5rem 0.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>המרכז הישראלי למצוינות בחינוך</h1>
+  <div class="subtitle">תוכנית פעולה — מערכת ניהול גיוס ופיתוח משאבים</div>
+  <div class="meta">
+    <span>על בסיס שיחה מיום 22.02.2026</span>
+    <span>|</span>
+    <span>4 החלטות פתוחות</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ===== SUMMARY ===== -->
+  <div class="summary">
+    <div class="summary-icon">&#x1F3AF;</div>
+    <div class="summary-text">
+      <p>המערכת מרכזת את כל פעילות הגיוס למקום אחד — מעקב תורמים, ניהול משימות, מעקב מענקים, וניטור מיילים. במקום עבודה מפוזרת בין וואטסאפ, מחברות, ומיילים — מערכת אחת שמנהלת, מזכירה, ומציעה.</p>
+      <span class="cost-tag">מנוי Claude Pro על המחשב המתפעל</span>
+    </div>
+  </div>
+
+  <!-- ===== 3 TRACKS OVERVIEW ===== -->
+  <div class="tracks-overview">
+    <div class="track-card chicago">
+      <div class="track-icon">&#x1F30E;</div>
+      <h3>קמפיין שיקגו</h3>
+      <div class="track-goal">גיוס תורמים אמריקאיים — ניהול צוות, מאגר פוטנציאליים, תיאום פגישות</div>
+    </div>
+    <div class="track-card alumni">
+      <div class="track-icon">&#x1F393;</div>
+      <h3>דרך הבוגרים</h3>
+      <div class="track-goal">50 פגישות &rarr; 10 תורמים תוך 3 חודשים — סריקת לינקדאין, pipeline</div>
+    </div>
+    <div class="track-card foundations">
+      <div class="track-icon">&#x1F3DB;</div>
+      <h3>קרנות ופילנתרופיה</h3>
+      <div class="track-goal">קולות קוראים, הגשת בקשות מענק, מעקב סטטוס</div>
+    </div>
+  </div>
+
+  <!-- ===== OPERATIONS MATRIX ===== -->
+  <div class="ops-card">
+    <div class="card-header">
+      <div class="card-icon" style="background:var(--blue-light);">&#x1F504;</div>
+      <div>
+        <h3>פעולות חוצות צירים</h3>
+        <div class="card-desc">אותן פעולות בווריאציות שונות לפי ציר</div>
+      </div>
+    </div>
+    <table class="ops-table">
+      <thead>
+        <tr>
+          <th>פעולה</th>
+          <th class="col-chicago">&#x1F30E; שיקגו</th>
+          <th class="col-alumni">&#x1F393; בוגרים</th>
+          <th class="col-foundations">&#x1F3DB; קרנות</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>&#x1F4C7; ניהול לידים ואנשי קשר</td>
+          <td>מאגר תורמים פוטנציאליים — כל קונטקט שהאשת-קשר מביאה (שם, רקע, סטטוס)</td>
+          <td>רשימת 50 פוטנציאליים מתוך קשרי בוגרים בלינקדאין</td>
+          <td>רשימת קרנות רלוונטיות + אנשי קשר בכל קרן</td>
+        </tr>
+        <tr>
+          <td>&#x1F91D; מעקב פגישות</td>
+          <td>תיעוד כל פגישה עם פוטנציאלי + סטטוס (זום &rarr; פרונטלי)</td>
+          <td>Pipeline: ליד &rarr; פנייה &rarr; פגישה &rarr; המרה</td>
+          <td>מעקב הגשות: הוגש / ממתין / אושר / נדחה</td>
+        </tr>
+        <tr>
+          <td>&#x23F0; תזכורות ומעקב</td>
+          <td>"דיברת עם מייקל — מה קרה?" + דחיפה לצוות כל 3-4 ימים</td>
+          <td>"הפגישה עם X היתה לפני שבוע — יש עדכון?"</td>
+          <td>"הגשת לקרן X לפני 6 שבועות — כדאי לבדוק"</td>
+        </tr>
+        <tr>
+          <td>&#x1F4E7; ניטור מיילים</td>
+          <td>דוחות בתי ספר (מ"נועה") — זיהוי פעילויות רלוונטיות להעביר לצוות</td>
+          <td class="na">—</td>
+          <td>קולות קוראים חדשים — חינוך, מצוינות, פילנתרופיה</td>
+        </tr>
+        <tr>
+          <td>&#x270D; הכנת חומרים</td>
+          <td>הצעת פורמט העברה לצוות (פסקה + תמונה) — טיוטה לעריכה</td>
+          <td>מסמך Pitch מרכזי שכל בוגר-שגריר משתמש בו</td>
+          <td>טיוטות בקשות מענק על בסיס תבניות קיימות</td>
+        </tr>
+        <tr>
+          <td>&#x1F4C5; תיאום יומן</td>
+          <td>הצעת זמנים + טיוטת מייל לתיאום מול מזכירה</td>
+          <td>הצעת זמנים לפגישות — היא מאשרת</td>
+          <td class="na">—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== UNIQUE PER TRACK ===== -->
+  <div class="unique-section">
+    <div class="unique-header bg-chicago">&#x1F30E; ייחודי לשיקגו</div>
+    <div class="unique-body">
+      <div class="unique-item">
+        <div class="u-icon build">&#x1F4E6;</div>
+        <div class="u-text">
+          <strong>מאגר חומרים לצוות</strong>
+          <span class="u-detail">מצגות, סרטונים, חומרים שיווקיים — מרכזי, הצוות שולף מה שצריך</span>
+        </div>
+      </div>
+      <div class="unique-item">
+        <div class="u-icon human">&#x1F465;</div>
+        <div class="u-text">
+          <strong>הפעלת צוות (בו אשר + תורם חדש)</strong>
+          <span class="u-detail">שיחות קבועות, דחיפה, אספקת כלים — המערכת מזכירה, המשתמשת מנהלת</span>
+        </div>
+      </div>
+      <div class="unique-item">
+        <div class="u-icon auto">&#x1F512;</div>
+        <div class="u-text">
+          <strong>מאגר שורד — אשת-קשר ל-6 חודשים</strong>
+          <span class="u-detail">כל מה שהיא מזינה נשמר גם אחרי שהיא עוזבת — ידע מוסדי, לא אישי</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="unique-section">
+    <div class="unique-header bg-alumni">&#x1F393; ייחודי לבוגרים</div>
+    <div class="unique-body">
+      <div class="unique-item">
+        <div class="u-icon human">&#x1F4AC;</div>
+        <div class="u-text">
+          <strong>גיבוש הצעת ערך עם קבוצת בוגרים</strong>
+          <span class="u-detail">קבוצה קיימת, שיחות מתנהלות — צריך לרכז לשיחה אחת ולסגור pitch</span>
+        </div>
+      </div>
+      <div class="unique-item">
+        <div class="u-icon auto">&#x1F50D;</div>
+        <div class="u-text">
+          <strong>סריקת לינקדאין</strong>
+          <span class="u-detail">חיפוש בקשרים של בוגרים: חברות עם הון / אחריות חברתית / ועדת תרומות / עניין בחינוך</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="unique-section">
+    <div class="unique-header bg-foundations">&#x1F3DB; ייחודי לקרנות</div>
+    <div class="unique-body">
+      <div class="unique-item">
+        <div class="u-icon auto">&#x1F4E1;</div>
+        <div class="u-text">
+          <strong>סריקת קולות קוראים</strong>
+          <span class="u-detail">ניטור אוטומטי ברקע — חינוך, מצוינות, פילנתרופיה</span>
+        </div>
+      </div>
+      <div class="unique-item">
+        <div class="u-icon build">&#x1F4DD;</div>
+        <div class="u-text">
+          <strong>עזרה בכתיבת בקשות מענק</strong>
+          <span class="u-detail">טיוטות על בסיס תבניות — המשתמשת עורכת ומאשרת</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CROSS-TRACK INFRA ===== -->
+  <div class="unique-section">
+    <div class="unique-header bg-cross">&#x2726; תשתית משותפת</div>
+    <div class="unique-body">
+      <div class="unique-item">
+        <div class="u-icon build">&#x2611;</div>
+        <div class="u-text">
+          <strong>ניהול משימות מרכזי</strong>
+          <span class="u-detail">הזנת משימות (טקסט חופשי או טופס), מיון כרונולוגי + לפי נושא/ציר</span>
+        </div>
+      </div>
+      <div class="unique-item">
+        <div class="u-icon build">&#x1F4CB;</div>
+        <div class="u-text">
+          <strong>תצוגת "מה צריך לעשות היום"</strong>
+          <span class="u-detail">ריכוז יומי מכל הצירים — משימות, תזכורות, מעקבים שהגיע זמנם</span>
+        </div>
+      </div>
+      <div class="unique-item">
+        <div class="u-icon build">&#x1F4C2;</div>
+        <div class="u-text">
+          <strong>ריכוז מסמכים מפוזרים</strong>
+          <span class="u-detail">חומרים מ-Notebook, הצעות לקרנות, מצגות, מיילים — הכל נגיש ממקום אחד</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SETUP ===== -->
+  <div class="cost-card">
+    <div class="cost-header">&#x1F4BB; סביבת עבודה</div>
+    <div class="cost-body">
+      <div class="cost-row">
+        <span class="cost-label">&#x1F4BB; המחשב המתפעל (שלה)</span>
+        <span class="cost-amount">מנוי Claude Pro — אינטראקציה, שאילתות, טיוטות</span>
+      </div>
+      <div class="cost-row">
+        <span class="cost-label">&#x1F6E0; המערכת הבונה (של צבי)</span>
+        <span class="cost-amount">מנוי Claude Max — פיתוח, בנייה, תחזוקה</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DECISIONS ===== -->
+  <div class="decisions">
+    <div class="decisions-header">&#x2753; החלטות שצריך לקבל לפני שמתחילים</div>
+    <div class="decisions-body">
+
+      <div class="decision-item">
+        <div class="q">&#x1F4E7; 1. מייל — Outlook או Gmail?</div>
+        <div class="context">היא משתמשת ב-Outlook אבל רוצה לעבור ל-Gmail. המערכת צריכה לדעת למה להתחבר. Gmail הרבה יותר קל לאינטגרציה.</div>
+        <div class="options">
+          <span class="option-pill recommended">להעביר ל-Gmail קודם</span>
+          <span class="option-pill">לבנות על Outlook</span>
+          <span class="option-pill">בלי מייל בשלב ראשון</span>
+        </div>
+      </div>
+
+      <div class="decision-item">
+        <div class="q">&#x1F4C1; 2. לאילו תיקיות לתת גישה?</div>
+        <div class="context">יש לה מידע אישי במחשב. המערכת צריכה רק תיקיות ספציפיות — לא גישה מלאה.</div>
+        <div class="options">
+          <span class="option-pill recommended">תיקייה ייעודית חדשה</span>
+          <span class="option-pill">Google Drive</span>
+          <span class="option-pill">Dropbox</span>
+        </div>
+      </div>
+
+      <div class="decision-item">
+        <div class="q">&#x1F50D; 3. לינקדאין — יש Premium?</div>
+        <div class="context">סריקת פרופילים דורשת גישה. LinkedIn חוסם scraping אגרסיבי. Sales Navigator ($80/חודש) נותן גישה מובנית.</div>
+        <div class="options">
+          <span class="option-pill">יש Premium</span>
+          <span class="option-pill">אין — נבדוק חלופות</span>
+          <span class="option-pill">נדחה לשלב מאוחר</span>
+        </div>
+      </div>
+
+      <div class="decision-item">
+        <div class="q">&#x1F4CA; 4. האם יש מידע קיים על תורמים?</div>
+        <div class="context">אם יש אקסלים, אנשי קשר, רשימות — אפשר לייבא ולא להתחיל מאפס.</div>
+        <div class="options">
+          <span class="option-pill">יש אקסלים/מסמכים</span>
+          <span class="option-pill">אין — מאפס</span>
+          <span class="option-pill">יש אבל מפוזר</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  נוצר אוטומטית על בסיס שיחה מוקלטת | ICEE Action Plan | 22.02.2026
+</footer>
+
+</body>
+</html>
