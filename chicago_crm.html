@@ -567,7 +567,7 @@ const T = {
   capMedium:          { he:"בינוני", en:"Medium" },
 
   // Sources
-  srcBoAsher:         { he:'בו אשר ז״ל', en:"Bo Asher z\"l" },
+  srcPersonalRef:     { he:"הפניה אישית", en:"Personal Referral" },
   srcContactPerson:   { he:"איש קשר", en:"Contact Person" },
   srcBoardReferral:   { he:"הפניית דירקטוריון", en:"Board Referral" },
   srcEvent:           { he:"אירוע", en:"Event" },
@@ -579,8 +579,8 @@ const T = {
   typeFollowup:       { he:"מעקב", en:"Follow-up" },
 
   // Team summary items
-  teamBoAsher:        { he:'בו אשר ז״ל', en:"Bo Asher z\"l" },
-  teamBoMeta:         { he:"10 פוטנציאליים · 2 התחייבו · 3 פגישות", en:"10 prospects sourced \u00B7 2 committed \u00B7 3 meetings arranged" },
+  teamPersonalRef:    { he:"הפניות אישיות", en:"Personal Referrals" },
+  teamPersonalMeta:   { he:"10 פוטנציאליים · 2 התחייבו · 3 פגישות", en:"10 prospects sourced \u00B7 2 committed \u00B7 3 meetings arranged" },
   teamContact:        { he:"איש/ת קשר", en:"Contact Person" },
   teamContactMeta:    { he:"7 פוטנציאליים זוהו · 2 פגישות נקבעו", en:"7 prospects identified \u00B7 2 meetings scheduled" },
   teamBoard:          { he:"הפניות דירקטוריון", en:"Board Referrals" },
@@ -604,7 +604,7 @@ function tCapacity(c) {
 }
 
 function tSource(s) {
-  if (s === "Bo Asher z\"l") return t('srcBoAsher');
+  if (s === "Personal Referral") return t('srcPersonalRef');
   if (s === "Contact Person") return t('srcContactPerson');
   if (s === "Board Referral") return t('srcBoardReferral');
   if (s === "Event") return t('srcEvent');
@@ -624,12 +624,12 @@ function tType(ty) {
 // ═══════════════════════════════════════════════════
 
 const DONORS = [
-  { id:1,  name:"Michael Goldstein", city:"Chicago", capacity:"Very High", status:"Met", source:'Bo Asher z"l',
+  { id:1,  name:"Michael Goldstein", city:"Chicago", capacity:"Very High", status:"Met", source:"Personal Referral",
     email:"mgoldstein@example.com", phone:"(312) 555-0142", org:"Goldstein Family Foundation",
     interests:["Education","Youth Development","Israel Relations"],
     notes: { en:"Major philanthropist with deep ties to Chicago Jewish community. Sits on JUF board. Had a very productive in-person meeting — expressed genuine interest in ICEE's mission. Wants to see school impact data before committing.",
              he:"פילנתרופ משמעותי עם קשרים עמוקים לקהילה היהודית בשיקגו. חבר דירקטוריון JUF. פגישה אישית מאוד פרודוקטיבית — הביע עניין אמיתי במשימת המרכז. רוצה לראות נתוני השפעה מבתי ספר לפני התחייבות." } },
-  { id:2,  name:"Rachel Steinberg", city:"Chicago", capacity:"High", status:"Follow-up", source:'Bo Asher z"l',
+  { id:2,  name:"Rachel Steinberg", city:"Chicago", capacity:"High", status:"Follow-up", source:"Personal Referral",
     email:"rsteinberg@example.com", phone:"(312) 555-0287", org:"Steinberg Ventures",
     interests:["Education","Women's Empowerment"],
     notes: { en:"Tech entrepreneur, passionate about educational equity. Had an engaged Zoom call — asked detailed questions about program scalability. Requested follow-up with impact metrics and budget breakdown.",
@@ -639,12 +639,12 @@ const DONORS = [
     interests:["Real Estate","Israel","Education"],
     notes: { en:"Real estate developer, known for large charitable gifts. Secretary confirmed meeting for Feb 27. Contact person did extensive background research — he recently funded a STEM program in Israel.",
              he:"יזם נדל״ן, ידוע בתרומות גדולות. המזכירה אישרה פגישה ל-27 בפברואר. איש/ת הקשר ביצע/ה מחקר רקע מקיף — הוא מימן לאחרונה תוכנית STEM בישראל." } },
-  { id:4,  name:"Jonathan Wexler", city:"Highland Park", capacity:"High", status:"Contacted", source:'Bo Asher z"l',
+  { id:4,  name:"Jonathan Wexler", city:"Highland Park", capacity:"High", status:"Contacted", source:"Personal Referral",
     email:"jwexler@example.com", phone:"(847) 555-0156", org:"Wexler Capital Partners",
     interests:["Finance","Education"],
-    notes: { en:"Hedge fund manager. Bo Asher z\"l had a personal connection through their synagogue. Initial email sent with ICEE overview. Responded positively — wants to learn more.",
-             he:"מנהל קרן גידור. לבו אשר ז״ל היה קשר אישי דרך בית הכנסת. נשלח אימייל ראשוני עם סקירת המרכז. הגיב בחיוב — רוצה ללמוד עוד." } },
-  { id:5,  name:"Susan Levine", city:"Winnetka", capacity:"High", status:"Committed", source:'Bo Asher z"l',
+    notes: { en:"Hedge fund manager. Connected through synagogue community. Initial email sent with ICEE overview. Responded positively — wants to learn more.",
+             he:"מנהל קרן גידור. התחברנו דרך קהילת בית הכנסת. נשלח אימייל ראשוני עם סקירת המרכז. הגיב בחיוב — רוצה ללמוד עוד." } },
+  { id:5,  name:"Susan Levine", city:"Winnetka", capacity:"High", status:"Committed", source:"Personal Referral",
     email:"slevine@example.com", phone:"(847) 555-0234", org:"Levine-Harris Foundation",
     interests:["Education","Children","Israel"],
     notes: { en:"Committed $100,000 over two years. Has been involved in Jewish education philanthropy for 20+ years. Very enthusiastic — offered to introduce ICEE to her network.",
@@ -674,21 +674,21 @@ const DONORS = [
     interests:["Healthcare","Education","Youth"],
     notes: { en:"Runs a dental practice group. Contact person identified her through community involvement. Active in local Jewish organizations — potential mid-range donor.",
              he:"מנהלת רשת מרפאות שיניים. איש/ת הקשר זיהה/תה אותה דרך מעורבות קהילתית. פעילה בארגונים יהודיים מקומיים — פוטנציאל לתרומה בינונית." } },
-  { id:11, name:"Howard Levin", city:"Chicago", capacity:"Very High", status:"Met", source:'Bo Asher z"l',
+  { id:11, name:"Howard Levin", city:"Chicago", capacity:"Very High", status:"Met", source:"Personal Referral",
     email:"hlevin@example.com", phone:"(312) 555-0845", org:"Levin Brothers Real Estate",
     interests:["Real Estate","Israel","Education"],
-    notes: { en:"Major real estate developer. Bo Asher z\"l knew him for years. In-person meeting was very positive — he's seen ICEE's impact firsthand during a trip to Israel. Reviewing proposal internally with his family office.",
-             he:"יזם נדל״ן משמעותי. בו אשר ז״ל הכיר אותו שנים. פגישה אישית מאוד חיובית — ראה את ההשפעה של המרכז בעצמו בביקור בישראל. בוחן את ההצעה באופן פנימי עם המשרד המשפחתי." } },
+    notes: { en:"Major real estate developer. Long-standing community connection. In-person meeting was very positive — he's seen ICEE's impact firsthand during a trip to Israel. Reviewing proposal internally with his family office.",
+             he:"יזם נדל״ן משמעותי. קשר קהילתי ותיק. פגישה אישית מאוד חיובית — ראה את ההשפעה של המרכז בעצמו בביקור בישראל. בוחן את ההצעה באופן פנימי עם המשרד המשפחתי." } },
   { id:12, name:"Barbara Schwartz", city:"Northbrook", capacity:"Medium", status:"Contacted", source:"Event",
     email:"bschwartz@example.com", phone:"(847) 555-0912", org:"Schwartz Interior Design",
     interests:["Design","Education","Community"],
     notes: { en:"Interior designer, active in North Shore Jewish community. Met at a community event. Sent introductory email with ICEE materials. Awaiting response.",
              he:"מעצבת פנים, פעילה בקהילה היהודית בנורת׳ שור. נפגשנו באירוע קהילתי. נשלח אימייל היכרות עם חומרי המרכז. ממתינים לתגובה." } },
-  { id:13, name:"Mark Greenberg", city:"New York", capacity:"Very High", status:"Meeting Scheduled", source:'Bo Asher z"l',
+  { id:13, name:"Mark Greenberg", city:"New York", capacity:"Very High", status:"Meeting Scheduled", source:"Personal Referral",
     email:"mgreenberg@example.com", phone:"(212) 555-0167", org:"Greenberg Global Investments",
     interests:["Finance","Israel","Education"],
-    notes: { en:"NYC-based investor with Chicago roots. Bo Asher z\"l reconnected with him at a conference. Zoom meeting scheduled for Feb 28. He's reportedly considering a major education-focused gift.",
-             he:"משקיע מניו יורק עם שורשים בשיקגו. בו אשר ז״ל חידש עמו קשר בכנס. פגישת זום נקבעה ל-28 בפברואר. על פי הדיווחים שוקל תרומה משמעותית בתחום החינוך." } },
+    notes: { en:"NYC-based investor with Chicago roots. Reconnected at a conference. Zoom meeting scheduled for Feb 28. He's reportedly considering a major education-focused gift.",
+             he:"משקיע מניו יורק עם שורשים בשיקגו. חידשנו קשר בכנס. פגישת זום נקבעה ל-28 בפברואר. על פי הדיווחים שוקל תרומה משמעותית בתחום החינוך." } },
   { id:14, name:"Lisa Cohen", city:"Los Angeles", capacity:"High", status:"Lead", source:"Board Referral",
     email:"lcohen@example.com", phone:"(310) 555-0289", org:"Cohen Family Trust",
     interests:["Entertainment","Education","Israel"],
@@ -699,12 +699,12 @@ const DONORS = [
     interests:["Consulting","Education"],
     notes: { en:"Management consultant. Contact person flagged him as a regular donor to education nonprofits. Initial call made — he was receptive but busy. Will follow up in two weeks.",
              he:"יועץ ניהולי. איש/ת הקשר סימן/ה אותו כתורם קבוע לעמותות חינוך. בוצעה שיחה ראשונית — מקבל אך עסוק. מעקב בעוד שבועיים." } },
-  { id:16, name:"Miriam Adler", city:"Chicago", capacity:"High", status:"Committed", source:'Bo Asher z"l',
+  { id:16, name:"Miriam Adler", city:"Chicago", capacity:"High", status:"Committed", source:"Personal Referral",
     email:"madler@example.com", phone:"(312) 555-0456", org:"Adler Philanthropic Fund",
     interests:["Education","Women in STEM","Israel"],
     notes: { en:"Pledged $50,000/year for 3 years ($150K total). Runs a philanthropic fund focused on women in education. Very aligned with ICEE's mission — wants to be involved in program selection.",
              he:"התחייבה ל-$50,000 לשנה למשך 3 שנים ($150K סה״כ). מנהלת קרן פילנתרופית המתמקדת בנשים בחינוך. מאוד מיושרת עם המשימה — רוצה להיות מעורבת בבחירת תוכניות." } },
-  { id:17, name:"Nathan Bloom", city:"Lake Forest", capacity:"High", status:"Declined", source:'Bo Asher z"l',
+  { id:17, name:"Nathan Bloom", city:"Lake Forest", capacity:"High", status:"Declined", source:"Personal Referral",
     email:"nbloom@example.com", phone:"(847) 555-0567", org:"Bloom Asset Management",
     interests:["Finance"],
     notes: { en:"Asset manager. Had multiple conversations but ultimately declined — his giving priorities shifted to healthcare after a family medical situation. Left the door open for future contact.",
@@ -739,12 +739,12 @@ const INTERACTIONS = [
     details:{ en:"Per his request, sent audited financials, program impact report, and a 2-page summary of the Chicago campaign strategy.", he:"לפי בקשתו, נשלחו דוחות כספיים מבוקרים, דו״ח השפעת תוכנית וסיכום של 2 עמודים של אסטרטגיית קמפיין שיקגו." } },
   { id:4,  donorId:1, date:"2026-02-12", type:"meeting",
     summary:{ en:"In-person meeting at Standard Club", he:"פגישה אישית בסטנדרד קלאב" },
-    details:{ en:"Met at Standard Club for lunch. Bo Asher z\"l joined. 90-minute conversation. He's impressed with the model. Wants to see school visit data and talk to an Israeli school principal before deciding. Very warm.", he:"נפגשנו בסטנדרד קלאב לארוחת צהריים. בו אשר ז״ל הצטרף. שיחה של 90 דקות. התרשם מהמודל. רוצה לראות נתוני ביקורי בתי ספר ולדבר עם מנהל בית ספר ישראלי לפני החלטה. מאוד חם." } },
+    details:{ en:"Met at Standard Club for lunch. 90-minute conversation. He's impressed with the model. Wants to see school visit data and talk to an Israeli school principal before deciding. Very warm.", he:"נפגשנו בסטנדרד קלאב לארוחת צהריים. שיחה של 90 דקות. התרשם מהמודל. רוצה לראות נתוני ביקורי בתי ספר ולדבר עם מנהל בית ספר ישראלי לפני החלטה. מאוד חם." } },
 
   // Rachel Steinberg (3)
   { id:5,  donorId:2, date:"2026-01-15", type:"call",
-    summary:{ en:"Introductory call via Bo Asher z\"l connection", he:"שיחת היכרות דרך הקשר של בו אשר ז״ל" },
-    details:{ en:"Bo Asher z\"l made the introduction by phone, then handed off. 20-minute call. She's interested in the scalability angle.", he:"בו אשר ז״ל ביצע את ההיכרות בטלפון, ואז העביר. שיחה של 20 דקות. היא מעוניינת בזווית הסקלביליות." } },
+    summary:{ en:"Introductory call via personal referral", he:"שיחת היכרות דרך הפניה אישית" },
+    details:{ en:"Introduction made by phone through personal referral, then handed off. 20-minute call. She's interested in the scalability angle.", he:"ההיכרות בוצעה בטלפון דרך הפניה אישית, ואז הועברה. שיחה של 20 דקות. היא מעוניינת בזווית הסקלביליות." } },
   { id:6,  donorId:2, date:"2026-01-28", type:"meeting",
     summary:{ en:"Zoom presentation — detailed Q&A", he:"מצגת זום — שאלות ותשובות מפורטות" },
     details:{ en:"45-minute Zoom. Walked through the full presentation. She asked about measurement methodology, cost per student, and expansion plans. Very analytical.", he:"זום של 45 דקות. עברנו על המצגת המלאה. שאלה על מתודולוגיית מדידה, עלות לתלמיד ותוכניות הרחבה. מאוד אנליטית." } },
@@ -762,16 +762,16 @@ const INTERACTIONS = [
 
   // Jonathan Wexler (2)
   { id:10, donorId:4, date:"2026-01-22", type:"email",
-    summary:{ en:"Outreach email via Bo Asher z\"l introduction", he:"אימייל פנייה דרך היכרות בו אשר ז״ל" },
-    details:{ en:"Bo Asher z\"l sent a personal email introducing ICEE. Followed up with formal overview materials.", he:"בו אשר ז״ל שלח אימייל אישי להצגת המרכז. מעקב עם חומרי סקירה רשמיים." } },
+    summary:{ en:"Outreach email via personal referral", he:"אימייל פנייה דרך הפניה אישית" },
+    details:{ en:"Sent a personal introduction email presenting ICEE. Followed up with formal overview materials.", he:"נשלח אימייל היכרות אישי להצגת המרכז. מעקב עם חומרי סקירה רשמיים." } },
   { id:11, donorId:4, date:"2026-02-03", type:"email",
     summary:{ en:"Positive response — requesting more info", he:"תגובה חיובית — מבקש מידע נוסף" },
     details:{ en:"He replied expressing interest. Asked about tax implications of donations and program specifics. Preparing detailed response.", he:"הוא השיב והביע עניין. שאל על השלכות מס של תרומות ופרטי תוכנית. מכינים תגובה מפורטת." } },
 
   // Susan Levine (4)
   { id:12, donorId:5, date:"2025-12-15", type:"call",
-    summary:{ en:"Initial outreach call through Bo Asher z\"l", he:"שיחת פנייה ראשונית דרך בו אשר ז״ל" },
-    details:{ en:"Bo Asher z\"l called together with her. She was already familiar with ICEE from a friend. Very warm reception.", he:"בו אשר ז״ל התקשר יחד איתה. היא כבר הכירה את המרכז מחברה. קבלת פנים חמה מאוד." } },
+    summary:{ en:"Initial outreach call through personal referral", he:"שיחת פנייה ראשונית דרך הפניה אישית" },
+    details:{ en:"Joint introductory call. She was already familiar with ICEE from a friend. Very warm reception.", he:"שיחת היכרות משותפת. היא כבר הכירה את המרכז מחברה. קבלת פנים חמה מאוד." } },
   { id:13, donorId:5, date:"2026-01-05", type:"meeting",
     summary:{ en:"Lunch meeting at her home in Winnetka", he:"פגישת ארוחת צהריים בביתה בווינטקה" },
     details:{ en:"Invited to her home. 2-hour conversation over lunch. She toured Israel 5 years ago and visited an ICEE school. Deeply moved by the experience.", he:"הוזמנו לביתה. שיחה של שעתיים על ארוחת צהריים. היא ביקרה בישראל לפני 5 שנים ופקדה בית ספר של המרכז. מאוד מרוגשת מהחוויה." } },
@@ -821,11 +821,11 @@ const INTERACTIONS = [
 
   // Howard Levin (3)
   { id:25, donorId:11, date:"2026-01-08", type:"call",
-    summary:{ en:"Bo Asher z\"l reconnected — warm lead", he:"בו אשר ז״ל חידש קשר — ליד חם" },
-    details:{ en:"Bo Asher z\"l had known him for 15 years. Called to reconnect and mentioned ICEE. Levin said he visited an ICEE school during a Birthright follow-up trip.", he:"בו אשר ז״ל הכיר אותו 15 שנה. התקשר לחדש קשר והזכיר את המרכז. לוין אמר שביקר בבית ספר של המרכז במהלך נסיעת המשך של תגלית." } },
+    summary:{ en:"Reconnected through community network — warm lead", he:"חידוש קשר דרך רשת קהילתית — ליד חם" },
+    details:{ en:"Long-standing community connection of 15 years. Called to reconnect and mentioned ICEE. Levin said he visited an ICEE school during a Birthright follow-up trip.", he:"קשר קהילתי ותיק של 15 שנה. התקשרנו לחדש קשר והזכרנו את המרכז. לוין אמר שביקר בבית ספר של המרכז במהלך נסיעת המשך של תגלית." } },
   { id:26, donorId:11, date:"2026-01-22", type:"meeting",
     summary:{ en:"Dinner meeting at Gibson's Bar", he:"פגישת ארוחת ערב בגיבסונ׳ס" },
-    details:{ en:"Bo Asher z\"l, ICEE director, and Levin at Gibson's. 2-hour dinner. He shared his Israel experience and was very moved. Wants to involve his family office.", he:"בו אשר ז״ל, מנהלת המרכז ולוין בגיבסונ׳ס. ארוחת ערב של שעתיים. שיתף את חוויית ישראל שלו ומאוד התרגש. רוצה לערב את המשרד המשפחתי." } },
+    details:{ en:"ICEE team and Levin at Gibson's. 2-hour dinner. He shared his Israel experience and was very moved. Wants to involve his family office.", he:"צוות המרכז ולוין בגיבסונ׳ס. ארוחת ערב של שעתיים. שיתף את חוויית ישראל שלו ומאוד התרגש. רוצה לערב את המשרד המשפחתי." } },
   { id:27, donorId:11, date:"2026-02-08", type:"email",
     summary:{ en:"Sent proposal to family office", he:"נשלחה הצעה למשרד המשפחתי" },
     details:{ en:"Formal proposal sent to his family office manager. Included 3-year partnership proposal with naming opportunities. Awaiting internal review.", he:"הצעה רשמית נשלחה למנהל המשרד המשפחתי. כללה הצעת שותפות ל-3 שנים עם הזדמנויות שם. ממתינים לסקירה פנימית." } },
@@ -837,8 +837,8 @@ const INTERACTIONS = [
 
   // Mark Greenberg (2)
   { id:29, donorId:13, date:"2026-01-30", type:"call",
-    summary:{ en:"Bo Asher z\"l reconnected at NYC conference", he:"בו אשר ז״ל חידש קשר בכנס בניו יורק" },
-    details:{ en:"Bo Asher z\"l ran into him at an investment conference in NYC. Discussed ICEE briefly. Greenberg has Chicago family roots and gives heavily to education.", he:"בו אשר ז״ל נתקל בו בכנס השקעות בניו יורק. דנו בקצרה על המרכז. לגרינברג שורשים משפחתיים בשיקגו והוא תורם רבות לחינוך." } },
+    summary:{ en:"Reconnected at NYC conference", he:"חידוש קשר בכנס בניו יורק" },
+    details:{ en:"Ran into him at an investment conference in NYC. Discussed ICEE briefly. Greenberg has Chicago family roots and gives heavily to education.", he:"נתקלנו בו בכנס השקעות בניו יורק. דנו בקצרה על המרכז. לגרינברג שורשים משפחתיים בשיקגו והוא תורם רבות לחינוך." } },
   { id:30, donorId:13, date:"2026-02-16", type:"email",
     summary:{ en:"Zoom meeting scheduled for Feb 28", he:"פגישת זום נקבעה ל-28 בפברואר" },
     details:{ en:"Confirmed Zoom meeting Feb 28 at 11:00 AM EST. He requested a condensed presentation. His assistant will also join.", he:"אושרה פגישת זום ב-28 בפברואר ב-11:00 שעון מזרח ארה״ב. ביקש מצגת מקוצרת. גם העוזרת שלו תצטרף." } },
@@ -850,8 +850,8 @@ const INTERACTIONS = [
 
   // Miriam Adler (3)
   { id:32, donorId:16, date:"2026-01-05", type:"call",
-    summary:{ en:"Bo Asher z\"l introduction call", he:"שיחת היכרות של בו אשר ז״ל" },
-    details:{ en:"Bo Asher z\"l introduced her by phone. She already knew about ICEE through a friend in Israel. Very aligned with the mission.", he:"בו אשר ז״ל הציג אותה בטלפון. היא כבר הכירה את המרכז דרך חברה בישראל. מאוד מיושרת עם המשימה." } },
+    summary:{ en:"Introduction call through personal referral", he:"שיחת היכרות דרך הפניה אישית" },
+    details:{ en:"Introduced by phone through personal referral. She already knew about ICEE through a friend in Israel. Very aligned with the mission.", he:"הוצגה בטלפון דרך הפניה אישית. היא כבר הכירה את המרכז דרך חברה בישראל. מאוד מיושרת עם המשימה." } },
   { id:33, donorId:16, date:"2026-01-18", type:"meeting",
     summary:{ en:"Coffee meeting at Intelligentsia", he:"פגישת קפה באינטליג׳נסיה" },
     details:{ en:"Met at Intelligentsia Coffee in Chicago. 1-hour meeting. She runs a fund focused on women in education. Perfect alignment.", he:"נפגשנו באינטליג׳נסיה קפה בשיקגו. פגישה של שעה. היא מנהלת קרן המתמקדת בנשים בחינוך. התאמה מושלמת." } },
@@ -862,7 +862,7 @@ const INTERACTIONS = [
   // Nathan Bloom (2)
   { id:35, donorId:17, date:"2026-01-14", type:"call",
     summary:{ en:"Introductory call — initially interested", he:"שיחת היכרות — עניין ראשוני" },
-    details:{ en:"Bo Asher z\"l arranged the call. Bloom was initially interested and asked about program details.", he:"בו אשר ז״ל סידר את השיחה. בלום הביע עניין ראשוני ושאל על פרטי התוכנית." } },
+    details:{ en:"Call arranged through personal referral. Bloom was initially interested and asked about program details.", he:"השיחה סודרה דרך הפניה אישית. בלום הביע עניין ראשוני ושאל על פרטי התוכנית." } },
   { id:36, donorId:17, date:"2026-02-04", type:"call",
     summary:{ en:"Follow-up — declined due to shifting priorities", he:"מעקב — סירב בשל שינוי סדרי עדיפויות" },
     details:{ en:"Called to follow up. He apologized — family medical situation shifted his giving priorities entirely to healthcare. Said to check back in a year.", he:"התקשרנו למעקב. הוא התנצל — מצב רפואי משפחתי הסיט את סדרי העדיפויות שלו לבריאות. אמר לחזור בעוד שנה." } },
@@ -940,7 +940,7 @@ function renderDashboard() {
     });
 
   const teamSummary = [
-    { icon:"\u{1F464}", text:t('teamBoAsher'), meta:t('teamBoMeta') },
+    { icon:"\u{1F464}", text:t('teamPersonalRef'), meta:t('teamPersonalMeta') },
     { icon:"\u{1F464}", text:t('teamContact'), meta:t('teamContactMeta') },
     { icon:"\u{1F4CB}", text:t('teamBoard'), meta:t('teamBoardMeta') },
     { icon:"\u{1F3AB}", text:t('teamEvents'), meta:t('teamEventsMeta') },
