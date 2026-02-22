@@ -217,6 +217,15 @@ html, body { height:100%; overflow:hidden; font-family:'Segoe UI',system-ui,-app
 .slide.animated .pillar:nth-child(3) { transition-delay: 0.24s; }
 .slide.animated .pillar:nth-child(4) { transition-delay: 0.36s; }
 
+/* ── Photo Background Slides ──────────────────── */
+.s-photo { background-size:cover; background-position:center; }
+.s-photo::before { content:''; position:absolute; inset:0; background:rgba(15,27,45,0.72); z-index:0; }
+.s-photo > * { position:relative; z-index:1; }
+
+/* ── Inline Images ─────────────────────────────── */
+.slide-img { max-width:560px; width:85%; border-radius:10px; margin:14px 0; box-shadow:0 4px 20px rgba(0,0,0,0.1); }
+.card-thumb { width:calc(100% + 36px); height:90px; object-fit:cover; border-radius:10px 10px 0 0; margin:-18px -18px 10px -18px; display:block; }
+
 /* ── Navigation ─────────────────────────────────── */
 .nav {
   position:fixed; bottom:20px; right:24px; z-index:100;
@@ -234,8 +243,7 @@ html, body { height:100%; overflow:hidden; font-family:'Segoe UI',system-ui,-app
 .nav button:hover { background:rgba(0,0,0,0.6); }
 .nav .counter {
   font-size:0.7rem; min-width:36px; text-align:center;
-  color:rgba(0,0,0,0.45);
-  text-shadow:0 0 6px rgba(255,255,255,0.7);
+  color:#fff; background:rgba(0,0,0,0.3); border-radius:10px; padding:2px 8px;
 }
 
 /* ── Responsive ─────────────────────────────────── */
@@ -255,8 +263,8 @@ html, body { height:100%; overflow:hidden; font-family:'Segoe UI',system-ui,-app
 <!-- ══════════════════════════════════════════════ -->
 <!-- 1. TITLE (dark)                               -->
 <!-- ══════════════════════════════════════════════ -->
-<div class="slide s-dark active">
-  <div class="s-label">IASA &mdash; Israel Arts and Science Academy</div>
+<div class="slide s-dark s-photo active" style="background-image:url(img/page16_img1.png)">
+  <img src="img/page01_img1.png" alt="IASA — Future Leaders and Innovators" style="width:160px;margin-bottom:12px;">
   <div class="s-title">Investing in Israel&rsquo;s<br>Greatest Resource:<br><em>Exceptional Minds</em></div>
   <div class="divider"></div>
   <div class="s-sub">Since 1990, IASA has transformed exceptional students into Israel&rsquo;s scientists, entrepreneurs, and leaders. Now we&rsquo;re expanding to reach the talent that geography left behind.</div>
@@ -296,7 +304,7 @@ html, body { height:100%; overflow:hidden; font-family:'Segoe UI',system-ui,-app
 <!-- ══════════════════════════════════════════════ -->
 <!-- 4. SECTION BREAK — IASA (dark)                -->
 <!-- ══════════════════════════════════════════════ -->
-<div class="slide s-dark">
+<div class="slide s-light">
   <div class="s-label">The Solution</div>
   <div class="s-title">IASA:<br><em>A Proven National Model</em></div>
   <div class="divider"></div>
@@ -358,18 +366,22 @@ html, body { height:100%; overflow:hidden; font-family:'Segoe UI',system-ui,-app
   <div class="s-title">Faces of <em>Impact</em></div>
   <div class="grid-2">
     <div class="g-card">
+      <img class="card-thumb" src="img/page19_img3.png" alt="">
       <h3>Forter &mdash; $3B Fraud Prevention</h3>
       <p>Michael Reitblat &amp; Liron Damri (Class of 2000) co-founded Forter: 14 offices, $500B+ in transactions protected annually, 1 billion consumers served. Both served in elite IDF intelligence.</p>
     </div>
     <div class="g-card">
+      <img class="card-thumb" src="img/page19_img4.png" alt="">
       <h3>Premature Birth Gene Discovery</h3>
       <p>Dr. Ortal Tamam&rsquo;s team identified the first gene responsible for premature birth&mdash;the leading cause of child mortality. Won the Bill &amp; Melinda Gates Prize.</p>
     </div>
     <div class="g-card">
+      <img class="card-thumb" src="img/page19_img1.png" alt="">
       <h3>Law &amp; Medicine</h3>
       <p>Oral Ben Zvi: Supreme Court attorney shaping Israel&rsquo;s legal framework. Aviv Ben Zvi: surgeon at Shaare Zedek, former IDF combat unit doctor (Major).</p>
     </div>
     <div class="g-card">
+      <img class="card-thumb" src="img/page19_img2.png" alt="">
       <h3>Israel Philharmonic</h3>
       <p>Soprano Tehila Siri Medvedda performed with the Israel Philharmonic under Zubin Mehta. Won the Jerusalem Opera Prize and Chestnut Piano International Festival.</p>
     </div>
@@ -393,10 +405,9 @@ html, body { height:100%; overflow:hidden; font-family:'Segoe UI',system-ui,-app
 <!-- ══════════════════════════════════════════════ -->
 <!-- 9. SECTION BREAK — CRISIS (dark)              -->
 <!-- ══════════════════════════════════════════════ -->
-<div class="slide s-dark">
+<div class="slide s-light">
   <div class="s-label">2023&ndash;Present</div>
   <div class="s-title">War Changed <em>Everything</em></div>
-  <div class="divider"></div>
   <div class="s-sub">The Gaza war didn&rsquo;t just disrupt education&mdash;it exposed how fragile Israel&rsquo;s system is for its most vulnerable students.</div>
   <ul class="bullets">
     <li>Thousands of students displaced from evacuated communities&mdash;no school, no routine, no stability</li>
@@ -412,6 +423,7 @@ html, body { height:100%; overflow:hidden; font-family:'Segoe UI',system-ui,-app
 <div class="slide s-light">
   <div class="s-label">35 Years</div>
   <div class="s-title">Built by <em>Visionaries</em></div>
+  <img src="img/page20_img1.png" alt="IASA cornerstone ceremony, 1989" class="slide-img" style="max-height:140px;object-fit:cover;">
   <div class="timeline">
     <div class="tl-row"><div class="tl-dot"></div><div class="tl-text"><strong>1990</strong> &mdash; Founded by Raphi Amram, Mary Jane &amp; Robert H. Asher as Israel&rsquo;s first interdisciplinary residential high school for gifted youth.</div></div>
     <div class="tl-row"><div class="tl-dot"></div><div class="tl-text"><strong>1997</strong> &mdash; U.S. Secretary of State Madeleine Albright visits. PM Netanyahu: &ldquo;The waiting list is a hundred years long.&rdquo;</div></div>
@@ -427,6 +439,7 @@ html, body { height:100%; overflow:hidden; font-family:'Segoe UI',system-ui,-app
 <div class="slide s-light">
   <div class="s-label">Jerusalem Campus</div>
   <div class="s-title">The <em>Schusterman</em> Campus</div>
+  <img src="img/page01_img3.png" alt="IASA Schusterman Campus, Jerusalem" class="slide-img" style="max-height:170px;object-fit:cover;">
   <div class="grid-2">
     <div class="g-card"><h3>Facilities</h3><p>10-acre campus with laboratories, music studios, art workshops, a 500-seat auditorium, dormitories, and sports facilities.</p></div>
     <div class="g-card"><h3>Community</h3><p>Secular &amp; religious Jews, Muslims, Christians, and Druze learn side by side. Students from 100+ communities across Israel.</p></div>
@@ -438,7 +451,7 @@ html, body { height:100%; overflow:hidden; font-family:'Segoe UI',system-ui,-app
 <!-- ══════════════════════════════════════════════ -->
 <!-- 12. SECTION BREAK — EXPANSION (dark)          -->
 <!-- ══════════════════════════════════════════════ -->
-<div class="slide s-dark">
+<div class="slide s-light">
   <div class="s-label">Expansion</div>
   <div class="s-title">One Vision,<br><em>Three Campuses</em></div>
   <div class="divider"></div>
@@ -496,7 +509,7 @@ html, body { height:100%; overflow:hidden; font-family:'Segoe UI',system-ui,-app
 <!-- ══════════════════════════════════════════════ -->
 <!-- 16. THE ASK — with chart (dark)               -->
 <!-- ══════════════════════════════════════════════ -->
-<div class="slide s-dark">
+<div class="slide s-light">
   <div class="s-label">The Ask</div>
   <div class="s-title">What <em>Your Partnership</em> Enables</div>
   <div class="grid-3">
@@ -509,7 +522,7 @@ html, body { height:100%; overflow:hidden; font-family:'Segoe UI',system-ui,-app
 <!-- ══════════════════════════════════════════════ -->
 <!-- 17. WHY NOW (dark)                            -->
 <!-- ══════════════════════════════════════════════ -->
-<div class="slide s-dark">
+<div class="slide s-light">
   <div class="s-label">Urgency</div>
   <div class="s-title">Why <em>Now</em></div>
   <div class="grid-2">
@@ -523,7 +536,7 @@ html, body { height:100%; overflow:hidden; font-family:'Segoe UI',system-ui,-app
 <!-- ══════════════════════════════════════════════ -->
 <!-- 18. FOUNDER QUOTE (dark)                      -->
 <!-- ══════════════════════════════════════════════ -->
-<div class="slide s-dark">
+<div class="slide s-dark s-photo" style="background-image:url(img/page20_img1.png)">
   <div class="quote" style="font-size:clamp(1.1rem, 2vw, 1.5rem)">&ldquo;There was nothing like it&mdash;an interdisciplinary school for high-achieving students in the arts and sciences. Founded on three principles: Excellence, Leadership, and Community Service.&rdquo;</div>
   <div class="quote-attr">&mdash; Bob Asher, Founder, at the cornerstone ceremony, June 27, 1989</div>
   <div class="divider" style="margin-top:28px"></div>
@@ -534,7 +547,7 @@ html, body { height:100%; overflow:hidden; font-family:'Segoe UI',system-ui,-app
 <!-- ══════════════════════════════════════════════ -->
 <!-- 19. CLOSING (dark)                            -->
 <!-- ══════════════════════════════════════════════ -->
-<div class="slide s-dark">
+<div class="slide s-dark s-photo" style="background-image:url(img/page04_img1.png)">
   <div class="s-title"><em>Be the Next Link</em><br>in the Chain</div>
   <div class="divider"></div>
   <div class="stat-row" style="margin-top:20px">
