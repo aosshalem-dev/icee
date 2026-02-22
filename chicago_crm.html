@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +20,6 @@
   --shadow-lg: 0 4px 12px rgba(0,0,0,0.1);
   --radius: 12px;
   --radius-sm: 8px;
-  /* pipeline stage colors */
   --stage-lead: #6b7280;
   --stage-contacted: #2563eb;
   --stage-meeting: #7c3aed;
@@ -39,7 +38,7 @@ html, body { height: 100%; font-family: 'Segoe UI', system-ui, -apple-system, sa
   height: 56px;
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 24px;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -54,14 +53,30 @@ html, body { height: 100%; font-family: 'Segoe UI', system-ui, -apple-system, sa
 .header-subtitle {
   font-size: 12px;
   opacity: 0.8;
-  margin-left: -24px;
 }
+
+/* ── Language Toggle ────────────────────────────── */
+.lang-btn {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #fff;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s;
+  font-family: inherit;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.lang-btn:hover { background: rgba(255,255,255,0.25); }
 
 /* ── Tabs ───────────────────────────────────────── */
 .tabs {
   display: flex;
   gap: 4px;
-  margin-left: auto;
+  margin-inline-start: auto;
 }
 .tab-btn {
   background: transparent;
@@ -158,11 +173,12 @@ html, body { height: 100%; font-family: 'Segoe UI', system-ui, -apple-system, sa
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   overflow: hidden;
+  overflow-x: auto;
 }
 table { width: 100%; border-collapse: collapse; }
 thead { background: #f9fafb; }
 th {
-  text-align: left;
+  text-align: start;
   padding: 12px 16px;
   font-size: 12px;
   font-weight: 600;
@@ -170,6 +186,7 @@ th {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   border-bottom: 1px solid var(--border);
+  white-space: nowrap;
 }
 td {
   padding: 12px 16px;
@@ -197,10 +214,7 @@ tbody tr:hover { background: var(--blue-light); }
 .pill-declined { background: #fee2e2; color: #b91c1c; }
 
 /* ── Capacity Badges ────────────────────────────── */
-.capacity {
-  font-size: 12px;
-  font-weight: 600;
-}
+.capacity { font-size: 12px; font-weight: 600; }
 .cap-very-high { color: #7c3aed; }
 .cap-high { color: #2563eb; }
 .cap-medium { color: #6b7280; }
@@ -223,11 +237,7 @@ tbody tr:hover { background: var(--blue-light); }
   overflow-x: auto;
   padding-bottom: 8px;
 }
-.pipeline-col {
-  flex: 1;
-  min-width: 180px;
-  max-width: 240px;
-}
+.pipeline-col { flex: 1; min-width: 180px; max-width: 240px; }
 .pipeline-header {
   padding: 10px 12px;
   border-radius: var(--radius-sm) var(--radius-sm) 0 0;
@@ -327,18 +337,20 @@ tbody tr:hover { background: var(--blue-light); }
 .detail-panel {
   position: fixed;
   top: 0;
-  right: 0;
   width: 520px;
   max-width: 100vw;
   height: 100vh;
   background: var(--card);
   z-index: 201;
-  transform: translateX(100%);
   transition: transform 0.3s ease;
   overflow-y: auto;
   box-shadow: -4px 0 24px rgba(0,0,0,0.15);
 }
-.detail-panel.open { transform: translateX(0); }
+/* RTL: panel slides from left; LTR: from right */
+[dir="rtl"] .detail-panel { left: 0; transform: translateX(-100%); }
+[dir="rtl"] .detail-panel.open { transform: translateX(0); }
+[dir="ltr"] .detail-panel { right: 0; transform: translateX(100%); }
+[dir="ltr"] .detail-panel.open { transform: translateX(0); }
 
 .detail-header {
   padding: 20px 24px;
@@ -351,7 +363,6 @@ tbody tr:hover { background: var(--blue-light); }
 .detail-close {
   position: absolute;
   top: 16px;
-  right: 16px;
   background: none;
   border: none;
   font-size: 24px;
@@ -364,10 +375,12 @@ tbody tr:hover { background: var(--blue-light); }
   justify-content: center;
   border-radius: 50%;
 }
+[dir="rtl"] .detail-close { left: auto; right: 16px; }
+[dir="ltr"] .detail-close { right: 16px; left: auto; }
 .detail-close:hover { background: #f3f4f6; }
 .detail-name { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
 .detail-meta { font-size: 13px; color: var(--text-light); }
-.detail-meta span { margin-right: 16px; }
+.detail-meta span { margin-inline-end: 16px; }
 
 .detail-body { padding: 20px 24px; }
 .detail-section { margin-bottom: 24px; }
@@ -396,24 +409,21 @@ tbody tr:hover { background: var(--blue-light); }
 }
 
 /* ── Interaction Timeline ───────────────────────── */
-.timeline { position: relative; padding-left: 24px; }
+.timeline { position: relative; padding-inline-start: 24px; }
 .timeline::before {
   content: '';
   position: absolute;
-  left: 7px;
   top: 4px;
   bottom: 4px;
   width: 2px;
   background: var(--border);
 }
-.tl-item {
-  position: relative;
-  padding-bottom: 20px;
-}
+[dir="rtl"] .timeline::before { right: 7px; }
+[dir="ltr"] .timeline::before { left: 7px; }
+.tl-item { position: relative; padding-bottom: 20px; }
 .tl-item:last-child { padding-bottom: 0; }
 .tl-dot {
   position: absolute;
-  left: -20px;
   top: 4px;
   width: 12px;
   height: 12px;
@@ -421,6 +431,8 @@ tbody tr:hover { background: var(--blue-light); }
   border: 2px solid var(--blue);
   background: var(--card);
 }
+[dir="rtl"] .tl-dot { right: -20px; }
+[dir="ltr"] .tl-dot { left: -20px; }
 .tl-item .tl-date { font-size: 12px; color: var(--text-light); margin-bottom: 2px; }
 .tl-item .tl-type {
   font-size: 11px;
@@ -434,7 +446,7 @@ tbody tr:hover { background: var(--blue-light); }
 
 /* ── Responsive ─────────────────────────────────── */
 @media (max-width: 768px) {
-  .header { padding: 0 12px; gap: 12px; }
+  .header { padding: 0 12px; gap: 8px; flex-wrap: wrap; height: auto; min-height: 56px; padding-top: 8px; padding-bottom: 8px; }
   .header-subtitle { display: none; }
   .tab-btn { padding: 8px 10px; font-size: 13px; }
   .content { padding: 16px; }
@@ -455,13 +467,14 @@ tbody tr:hover { background: var(--blue-light); }
 
 <!-- Header + Tabs -->
 <header class="header">
-  <div class="header-title">Chicago Campaign CRM</div>
-  <div class="header-subtitle">ICEE Resource Development</div>
+  <div class="header-title" id="header-title"></div>
+  <div class="header-subtitle" id="header-subtitle"></div>
+  <button class="lang-btn" id="lang-btn"></button>
   <nav class="tabs">
-    <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
-    <button class="tab-btn" data-tab="prospects">Prospects</button>
-    <button class="tab-btn" data-tab="pipeline">Pipeline</button>
-    <button class="tab-btn" data-tab="activity">Activity</button>
+    <button class="tab-btn active" data-tab="dashboard" id="tab-btn-dashboard"></button>
+    <button class="tab-btn" data-tab="prospects" id="tab-btn-prospects"></button>
+    <button class="tab-btn" data-tab="pipeline" id="tab-btn-pipeline"></button>
+    <button class="tab-btn" data-tab="activity" id="tab-btn-activity"></button>
   </nav>
 </header>
 
@@ -486,164 +499,381 @@ tbody tr:hover { background: var(--blue-light); }
 
 <script>
 // ═══════════════════════════════════════════════════
+// I18N — Translation Layer
+// ═══════════════════════════════════════════════════
+
+let LANG = 'he'; // start in Hebrew
+
+const T = {
+  // Header
+  headerTitle:        { he:"CRM קמפיין שיקגו", en:"Chicago Campaign CRM" },
+  headerSubtitle:     { he:"המרכז הישראלי למצוינות — גיוס משאבים", en:"ICEE Resource Development" },
+  langBtnLabel:       { he:"English", en:"עברית" },
+
+  // Tabs
+  tabDashboard:       { he:"לוח בקרה", en:"Dashboard" },
+  tabProspects:       { he:"תורמים פוטנציאליים", en:"Prospects" },
+  tabPipeline:        { he:"צינור גיוס", en:"Pipeline" },
+  tabActivity:        { he:"פעילות", en:"Activity" },
+
+  // Dashboard
+  totalProspects:     { he:"סה״כ פוטנציאליים", en:"Total Prospects" },
+  stagesInPipeline:   { he:"7 שלבים בצינור", en:"7 stages in pipeline" },
+  meetingsThisMonth:  { he:"פגישות החודש", en:"Meetings This Month" },
+  completed:          { he:"הושלמו", en:"completed" },
+  upcoming:           { he:"קרובות", en:"upcoming" },
+  pipelineValue:      { he:"שווי צינור", en:"Pipeline Value" },
+  basedOnCapacity:    { he:"על בסיס הערכות קיבולת", en:"Based on capacity estimates" },
+  conversionRate:     { he:"שיעור המרה", en:"Conversion Rate" },
+  committedOf:        { he:"התחייבו מתוך", en:"committed of" },
+  upcomingSection:    { he:"פגישות ומעקבים קרובים", en:"Upcoming Meetings & Follow-ups" },
+  recentActivity:     { he:"פעילות אחרונה", en:"Recent Activity" },
+  teamSummary:        { he:"סיכום צוות", en:"Team Summary" },
+  pipelineSnapshot:   { he:"תמונת מצב צינור", en:"Pipeline Snapshot" },
+
+  // Prospects table
+  searchPlaceholder:  { he:"חיפוש לפי שם, עיר, ארגון, מקור...", en:"Search by name, city, organization, source..." },
+  allStatuses:        { he:"כל הסטטוסים", en:"All Statuses" },
+  colName:            { he:"שם", en:"Name" },
+  colCity:            { he:"עיר", en:"City" },
+  colOrg:             { he:"ארגון", en:"Organization" },
+  colCapacity:        { he:"קיבולת", en:"Capacity" },
+  colStatus:          { he:"סטטוס", en:"Status" },
+  colSource:          { he:"מקור", en:"Source" },
+  colInteractions:    { he:"אינטראקציות", en:"Interactions" },
+  noResults:          { he:"לא נמצאו תוצאות", en:"No prospects match your search" },
+
+  // Detail panel
+  profile:            { he:"פרופיל", en:"Profile" },
+  interests:          { he:"תחומי עניין", en:"Interests" },
+  notes:              { he:"הערות", en:"Notes" },
+  interactionHistory: { he:"היסטוריית אינטראקציות", en:"Interaction History" },
+  noInteractions:     { he:"אין אינטראקציות רשומות עדיין", en:"No interactions recorded yet" },
+  email:              { he:"אימייל", en:"Email" },
+  phone:              { he:"טלפון", en:"Phone" },
+
+  // Statuses
+  statusLead:         { he:"ליד", en:"Lead" },
+  statusContacted:    { he:"יצירת קשר", en:"Contacted" },
+  statusMeeting:      { he:"פגישה נקבעה", en:"Meeting Scheduled" },
+  statusMet:          { he:"נפגשנו", en:"Met" },
+  statusFollowup:     { he:"מעקב", en:"Follow-up" },
+  statusCommitted:    { he:"התחייב", en:"Committed" },
+  statusDeclined:     { he:"סירב", en:"Declined" },
+
+  // Capacities
+  capVeryHigh:        { he:"גבוה מאוד", en:"Very High" },
+  capHigh:            { he:"גבוה", en:"High" },
+  capMedium:          { he:"בינוני", en:"Medium" },
+
+  // Sources
+  srcBoAsher:         { he:'בו אשר ז״ל', en:"Bo Asher z\"l" },
+  srcContactPerson:   { he:"איש קשר", en:"Contact Person" },
+  srcBoardReferral:   { he:"הפניית דירקטוריון", en:"Board Referral" },
+  srcEvent:           { he:"אירוע", en:"Event" },
+
+  // Interaction types
+  typeCall:           { he:"שיחה", en:"Call" },
+  typeEmail:          { he:"אימייל", en:"Email" },
+  typeMeeting:        { he:"פגישה", en:"Meeting" },
+  typeFollowup:       { he:"מעקב", en:"Follow-up" },
+
+  // Team summary items
+  teamBoAsher:        { he:'בו אשר ז״ל', en:"Bo Asher z\"l" },
+  teamBoMeta:         { he:"10 פוטנציאליים · 2 התחייבו · 3 פגישות", en:"10 prospects sourced \u00B7 2 committed \u00B7 3 meetings arranged" },
+  teamContact:        { he:"איש/ת קשר", en:"Contact Person" },
+  teamContactMeta:    { he:"7 פוטנציאליים זוהו · 2 פגישות נקבעו", en:"7 prospects identified \u00B7 2 meetings scheduled" },
+  teamBoard:          { he:"הפניות דירקטוריון", en:"Board Referrals" },
+  teamBoardMeta:      { he:"2 הפניות · 1 במעקב", en:"2 referrals \u00B7 1 in follow-up" },
+  teamEvents:         { he:"אירועים", en:"Events" },
+  teamEventsMeta:     { he:"3 פוטנציאליים מאירועים · 1 במעקב", en:"3 prospects from events \u00B7 1 in follow-up" },
+};
+
+function t(key) { return T[key] ? (T[key][LANG] || T[key].en) : key; }
+
+// Status translation lookup
+const STATUS_KEYS = ["Lead","Contacted","Meeting Scheduled","Met","Follow-up","Committed","Declined"];
+const STATUS_T_KEYS = ["statusLead","statusContacted","statusMeeting","statusMet","statusFollowup","statusCommitted","statusDeclined"];
+function tStatus(s) { const idx = STATUS_KEYS.indexOf(s); return idx >= 0 ? t(STATUS_T_KEYS[idx]) : s; }
+
+function tCapacity(c) {
+  if (c === "Very High") return t('capVeryHigh');
+  if (c === "High") return t('capHigh');
+  if (c === "Medium") return t('capMedium');
+  return c;
+}
+
+function tSource(s) {
+  if (s === "Bo Asher z\"l") return t('srcBoAsher');
+  if (s === "Contact Person") return t('srcContactPerson');
+  if (s === "Board Referral") return t('srcBoardReferral');
+  if (s === "Event") return t('srcEvent');
+  return s;
+}
+
+function tType(ty) {
+  if (ty === "call") return t('typeCall');
+  if (ty === "email") return t('typeEmail');
+  if (ty === "meeting") return t('typeMeeting');
+  if (ty === "followup") return t('typeFollowup');
+  return ty;
+}
+
+// ═══════════════════════════════════════════════════
 // DATA LAYER
 // ═══════════════════════════════════════════════════
 
 const DONORS = [
-  { id:1,  name:"Michael Goldstein", city:"Chicago", capacity:"Very High", status:"Met", source:"Bo Asher",
+  { id:1,  name:"Michael Goldstein", city:"Chicago", capacity:"Very High", status:"Met", source:'Bo Asher z"l',
     email:"mgoldstein@example.com", phone:"(312) 555-0142", org:"Goldstein Family Foundation",
     interests:["Education","Youth Development","Israel Relations"],
-    notes:"Major philanthropist with deep ties to Chicago Jewish community. Sits on JUF board. Had a very productive in-person meeting — expressed genuine interest in ICEE's mission. Wants to see school impact data before committing." },
-  { id:2,  name:"Rachel Steinberg", city:"Chicago", capacity:"High", status:"Follow-up", source:"Bo Asher",
+    notes: { en:"Major philanthropist with deep ties to Chicago Jewish community. Sits on JUF board. Had a very productive in-person meeting — expressed genuine interest in ICEE's mission. Wants to see school impact data before committing.",
+             he:"פילנתרופ משמעותי עם קשרים עמוקים לקהילה היהודית בשיקגו. חבר דירקטוריון JUF. פגישה אישית מאוד פרודוקטיבית — הביע עניין אמיתי במשימת המרכז. רוצה לראות נתוני השפעה מבתי ספר לפני התחייבות." } },
+  { id:2,  name:"Rachel Steinberg", city:"Chicago", capacity:"High", status:"Follow-up", source:'Bo Asher z"l',
     email:"rsteinberg@example.com", phone:"(312) 555-0287", org:"Steinberg Ventures",
     interests:["Education","Women's Empowerment"],
-    notes:"Tech entrepreneur, passionate about educational equity. Had an engaged Zoom call — asked detailed questions about program scalability. Requested follow-up with impact metrics and budget breakdown." },
+    notes: { en:"Tech entrepreneur, passionate about educational equity. Had an engaged Zoom call — asked detailed questions about program scalability. Requested follow-up with impact metrics and budget breakdown.",
+             he:"יזמית טק, נלהבת משוויון חינוכי. שיחת זום מעורבת מאוד — שאלה שאלות מפורטות על סקלביליות התוכנית. ביקשה מעקב עם מדדי השפעה ופירוט תקציב." } },
   { id:3,  name:"David Abramson", city:"Chicago", capacity:"Very High", status:"Meeting Scheduled", source:"Contact Person",
     email:"dabramson@example.com", phone:"(312) 555-0391", org:"Abramson Holdings",
     interests:["Real Estate","Israel","Education"],
-    notes:"Real estate developer, known for large charitable gifts. Secretary confirmed meeting for Feb 27. Contact person did extensive background research — he recently funded a STEM program in Israel." },
-  { id:4,  name:"Jonathan Wexler", city:"Highland Park", capacity:"High", status:"Contacted", source:"Bo Asher",
+    notes: { en:"Real estate developer, known for large charitable gifts. Secretary confirmed meeting for Feb 27. Contact person did extensive background research — he recently funded a STEM program in Israel.",
+             he:"יזם נדל״ן, ידוע בתרומות גדולות. המזכירה אישרה פגישה ל-27 בפברואר. איש/ת הקשר ביצע/ה מחקר רקע מקיף — הוא מימן לאחרונה תוכנית STEM בישראל." } },
+  { id:4,  name:"Jonathan Wexler", city:"Highland Park", capacity:"High", status:"Contacted", source:'Bo Asher z"l',
     email:"jwexler@example.com", phone:"(847) 555-0156", org:"Wexler Capital Partners",
     interests:["Finance","Education"],
-    notes:"Hedge fund manager. Bo Asher has a personal connection through their synagogue. Initial email sent with ICEE overview. Responded positively — wants to learn more." },
-  { id:5,  name:"Susan Levine", city:"Winnetka", capacity:"High", status:"Committed", source:"Bo Asher",
+    notes: { en:"Hedge fund manager. Bo Asher z\"l had a personal connection through their synagogue. Initial email sent with ICEE overview. Responded positively — wants to learn more.",
+             he:"מנהל קרן גידור. לבו אשר ז״ל היה קשר אישי דרך בית הכנסת. נשלח אימייל ראשוני עם סקירת המרכז. הגיב בחיוב — רוצה ללמוד עוד." } },
+  { id:5,  name:"Susan Levine", city:"Winnetka", capacity:"High", status:"Committed", source:'Bo Asher z"l',
     email:"slevine@example.com", phone:"(847) 555-0234", org:"Levine-Harris Foundation",
     interests:["Education","Children","Israel"],
-    notes:"Committed $100,000 over two years. Has been involved in Jewish education philanthropy for 20+ years. Very enthusiastic — offered to introduce ICEE to her network." },
+    notes: { en:"Committed $100,000 over two years. Has been involved in Jewish education philanthropy for 20+ years. Very enthusiastic — offered to introduce ICEE to her network.",
+             he:"התחייבה ל-$100,000 על פני שנתיים. מעורבת בפילנתרופיה חינוכית יהודית למעלה מ-20 שנה. נלהבת מאוד — הציעה להציג את המרכז לרשת שלה." } },
   { id:6,  name:"Robert Katz", city:"Glencoe", capacity:"Very High", status:"Follow-up", source:"Board Referral",
     email:"rkatz@example.com", phone:"(847) 555-0378", org:"Katz Industries",
     interests:["Manufacturing","Education","Community Development"],
-    notes:"Manufacturing executive. Board member referred him as a strong prospect. Had initial meeting — he's interested but wants to visit a school in Israel before committing. Planning a trip in spring." },
+    notes: { en:"Manufacturing executive. Board member referred him as a strong prospect. Had initial meeting — he's interested but wants to visit a school in Israel before committing. Planning a trip in spring.",
+             he:"מנכ״ל תעשייה. חבר דירקטוריון הפנה אותו כמועמד חזק. הייתה פגישה ראשונית — מעוניין אך רוצה לבקר בבית ספר בישראל לפני התחייבות. מתכנן נסיעה באביב." } },
   { id:7,  name:"Daniel Friedman", city:"Evanston", capacity:"Medium", status:"Lead", source:"Contact Person",
     email:"dfriedman@example.com", phone:"(847) 555-0412", org:"Friedman & Associates Law",
     interests:["Law","Education","Social Justice"],
-    notes:"Attorney with a small practice. Contact person identified him through community event attendance. Known to give to education causes — moderate capacity but consistent giver." },
+    notes: { en:"Attorney with a small practice. Contact person identified him through community event attendance. Known to give to education causes — moderate capacity but consistent giver.",
+             he:"עורך דין עם משרד קטן. איש/ת הקשר זיהה/תה אותו דרך השתתפות באירועים קהילתיים. ידוע כתורם למטרות חינוך — קיבולת בינונית אך תורם עקבי." } },
   { id:8,  name:"Laura Shapiro", city:"Wilmette", capacity:"High", status:"Meeting Scheduled", source:"Contact Person",
     email:"lshapiro@example.com", phone:"(847) 555-0519", org:"Shapiro Media Group",
     interests:["Media","Education","Arts"],
-    notes:"Media company owner. Contact person met her at a charity gala. Very interested in education innovation. Meeting scheduled for March 3 — she requested a short presentation." },
+    notes: { en:"Media company owner. Contact person met her at a charity gala. Very interested in education innovation. Meeting scheduled for March 3 — she requested a short presentation.",
+             he:"בעלת חברת מדיה. איש/ת הקשר פגש/ה אותה באירוע צדקה. מאוד מעוניינת בחדשנות חינוכית. פגישה נקבעה ל-3 במרץ — ביקשה מצגת קצרה." } },
   { id:9,  name:"Steven Rosen", city:"Chicago", capacity:"High", status:"Contacted", source:"Event",
     email:"srosen@example.com", phone:"(312) 555-0623", org:"Rosen Technology Solutions",
     interests:["Technology","STEM Education"],
-    notes:"Met at JUF annual dinner. CTO of a mid-size tech firm. Showed interest in STEM education programs. Follow-up email sent with program details." },
+    notes: { en:"Met at JUF annual dinner. CTO of a mid-size tech firm. Showed interest in STEM education programs. Follow-up email sent with program details.",
+             he:"נפגשנו בארוחת JUF השנתית. CTO בחברת טק בינונית. הביע עניין בתוכניות חינוך STEM. נשלח אימייל מעקב עם פרטי תוכנית." } },
   { id:10, name:"Amy Berkowitz", city:"Skokie", capacity:"Medium", status:"Lead", source:"Contact Person",
     email:"aberkowitz@example.com", phone:"(847) 555-0734", org:"Berkowitz Dental Group",
     interests:["Healthcare","Education","Youth"],
-    notes:"Runs a dental practice group. Contact person identified her through community involvement. Active in local Jewish organizations — potential mid-range donor." },
-  { id:11, name:"Howard Levin", city:"Chicago", capacity:"Very High", status:"Met", source:"Bo Asher",
+    notes: { en:"Runs a dental practice group. Contact person identified her through community involvement. Active in local Jewish organizations — potential mid-range donor.",
+             he:"מנהלת רשת מרפאות שיניים. איש/ת הקשר זיהה/תה אותה דרך מעורבות קהילתית. פעילה בארגונים יהודיים מקומיים — פוטנציאל לתרומה בינונית." } },
+  { id:11, name:"Howard Levin", city:"Chicago", capacity:"Very High", status:"Met", source:'Bo Asher z"l',
     email:"hlevin@example.com", phone:"(312) 555-0845", org:"Levin Brothers Real Estate",
     interests:["Real Estate","Israel","Education"],
-    notes:"Major real estate developer. Bo Asher has known him for years. In-person meeting was very positive — he's seen ICEE's impact firsthand during a trip to Israel. Reviewing proposal internally with his family office." },
+    notes: { en:"Major real estate developer. Bo Asher z\"l knew him for years. In-person meeting was very positive — he's seen ICEE's impact firsthand during a trip to Israel. Reviewing proposal internally with his family office.",
+             he:"יזם נדל״ן משמעותי. בו אשר ז״ל הכיר אותו שנים. פגישה אישית מאוד חיובית — ראה את ההשפעה של המרכז בעצמו בביקור בישראל. בוחן את ההצעה באופן פנימי עם המשרד המשפחתי." } },
   { id:12, name:"Barbara Schwartz", city:"Northbrook", capacity:"Medium", status:"Contacted", source:"Event",
     email:"bschwartz@example.com", phone:"(847) 555-0912", org:"Schwartz Interior Design",
     interests:["Design","Education","Community"],
-    notes:"Interior designer, active in North Shore Jewish community. Met at a community event. Sent introductory email with ICEE materials. Awaiting response." },
-  { id:13, name:"Mark Greenberg", city:"New York", capacity:"Very High", status:"Meeting Scheduled", source:"Bo Asher",
+    notes: { en:"Interior designer, active in North Shore Jewish community. Met at a community event. Sent introductory email with ICEE materials. Awaiting response.",
+             he:"מעצבת פנים, פעילה בקהילה היהודית בנורת׳ שור. נפגשנו באירוע קהילתי. נשלח אימייל היכרות עם חומרי המרכז. ממתינים לתגובה." } },
+  { id:13, name:"Mark Greenberg", city:"New York", capacity:"Very High", status:"Meeting Scheduled", source:'Bo Asher z"l',
     email:"mgreenberg@example.com", phone:"(212) 555-0167", org:"Greenberg Global Investments",
     interests:["Finance","Israel","Education"],
-    notes:"NYC-based investor with Chicago roots. Bo Asher reconnected with him at a conference. Zoom meeting scheduled for Feb 28. He's reportedly considering a major education-focused gift." },
+    notes: { en:"NYC-based investor with Chicago roots. Bo Asher z\"l reconnected with him at a conference. Zoom meeting scheduled for Feb 28. He's reportedly considering a major education-focused gift.",
+             he:"משקיע מניו יורק עם שורשים בשיקגו. בו אשר ז״ל חידש עמו קשר בכנס. פגישת זום נקבעה ל-28 בפברואר. על פי הדיווחים שוקל תרומה משמעותית בתחום החינוך." } },
   { id:14, name:"Lisa Cohen", city:"Los Angeles", capacity:"High", status:"Lead", source:"Board Referral",
     email:"lcohen@example.com", phone:"(310) 555-0289", org:"Cohen Family Trust",
     interests:["Entertainment","Education","Israel"],
-    notes:"Entertainment industry executive. Board member introduced her. Has a family trust focused on Israel-related causes. No contact yet — board member will make the introduction." },
+    notes: { en:"Entertainment industry executive. Board member introduced her. Has a family trust focused on Israel-related causes. No contact yet — board member will make the introduction.",
+             he:"מנהלת בכירה בתעשיית הבידור. חבר דירקטוריון הציג אותה. מנהלת קרן משפחתית המתמקדת בנושאי ישראל. טרם נוצר קשר — חבר דירקטוריון יבצע את ההיכרות." } },
   { id:15, name:"Jeffrey Rubin", city:"Deerfield", capacity:"Medium", status:"Contacted", source:"Contact Person",
     email:"jrubin@example.com", phone:"(847) 555-0345", org:"Rubin Consulting LLC",
     interests:["Consulting","Education"],
-    notes:"Management consultant. Contact person flagged him as a regular donor to education nonprofits. Initial call made — he was receptive but busy. Will follow up in two weeks." },
-  { id:16, name:"Miriam Adler", city:"Chicago", capacity:"High", status:"Committed", source:"Bo Asher",
+    notes: { en:"Management consultant. Contact person flagged him as a regular donor to education nonprofits. Initial call made — he was receptive but busy. Will follow up in two weeks.",
+             he:"יועץ ניהולי. איש/ת הקשר סימן/ה אותו כתורם קבוע לעמותות חינוך. בוצעה שיחה ראשונית — מקבל אך עסוק. מעקב בעוד שבועיים." } },
+  { id:16, name:"Miriam Adler", city:"Chicago", capacity:"High", status:"Committed", source:'Bo Asher z"l',
     email:"madler@example.com", phone:"(312) 555-0456", org:"Adler Philanthropic Fund",
     interests:["Education","Women in STEM","Israel"],
-    notes:"Pledged $50,000/year for 3 years ($150K total). Runs a philanthropic fund focused on women in education. Very aligned with ICEE's mission — wants to be involved in program selection." },
-  { id:17, name:"Nathan Bloom", city:"Lake Forest", capacity:"High", status:"Declined", source:"Bo Asher",
+    notes: { en:"Pledged $50,000/year for 3 years ($150K total). Runs a philanthropic fund focused on women in education. Very aligned with ICEE's mission — wants to be involved in program selection.",
+             he:"התחייבה ל-$50,000 לשנה למשך 3 שנים ($150K סה״כ). מנהלת קרן פילנתרופית המתמקדת בנשים בחינוך. מאוד מיושרת עם המשימה — רוצה להיות מעורבת בבחירת תוכניות." } },
+  { id:17, name:"Nathan Bloom", city:"Lake Forest", capacity:"High", status:"Declined", source:'Bo Asher z"l',
     email:"nbloom@example.com", phone:"(847) 555-0567", org:"Bloom Asset Management",
     interests:["Finance"],
-    notes:"Asset manager. Had multiple conversations but ultimately declined — his giving priorities shifted to healthcare after a family medical situation. Left the door open for future contact." },
+    notes: { en:"Asset manager. Had multiple conversations but ultimately declined — his giving priorities shifted to healthcare after a family medical situation. Left the door open for future contact.",
+             he:"מנהל נכסים. היו מספר שיחות אך בסופו של דבר סירב — סדרי העדיפויות שלו עברו לבריאות בעקבות מצב רפואי משפחתי. השאיר דלת פתוחה לעתיד." } },
   { id:18, name:"Sarah Weintraub", city:"Kenilworth", capacity:"Very High", status:"Lead", source:"Contact Person",
     email:"sweintraub@example.com", phone:"(847) 555-0678", org:"Weintraub Foundation",
     interests:["Education","Philanthropy","Israel"],
-    notes:"Runs a major family foundation. Contact person identified her through philanthropic network. Very high potential — foundation gives $2M+ annually to education causes. No outreach yet, gathering intel." },
+    notes: { en:"Runs a major family foundation. Contact person identified her through philanthropic network. Very high potential — foundation gives $2M+ annually to education causes. No outreach yet, gathering intel.",
+             he:"מנהלת קרן משפחתית משמעותית. איש/ת הקשר זיהה/תה אותה דרך רשת פילנתרופית. פוטנציאל גבוה מאוד — הקרן תורמת $2M+ בשנה למטרות חינוך. טרם בוצע פנייה, אוספים מידע." } },
   { id:19, name:"Alan Hoffman", city:"Chicago", capacity:"Medium", status:"Follow-up", source:"Event",
     email:"ahoffman@example.com", phone:"(312) 555-0789", org:"Hoffman Accounting",
     interests:["Finance","Education","Community"],
-    notes:"CPA with his own firm. Met at a community event and expressed interest. Had a brief call — he's interested in a smaller contribution and possibly connecting us with his clients." },
+    notes: { en:"CPA with his own firm. Met at a community event and expressed interest. Had a brief call — he's interested in a smaller contribution and possibly connecting us with his clients.",
+             he:"רו״ח עם משרד עצמאי. נפגשנו באירוע קהילתי והביע עניין. שיחה קצרה — מעוניין בתרומה קטנה יותר ואולי לחבר אותנו עם לקוחותיו." } },
   { id:20, name:"Rebecca Stern", city:"Lincolnshire", capacity:"Medium", status:"Lead", source:"Contact Person",
     email:"rstern@example.com", phone:"(847) 555-0890", org:"Stern Pediatrics",
     interests:["Healthcare","Education","Children"],
-    notes:"Pediatrician. Contact person identified her through a local education board. Known for supporting children's causes. No outreach yet." }
+    notes: { en:"Pediatrician. Contact person identified her through a local education board. Known for supporting children's causes. No outreach yet.",
+             he:"רופאת ילדים. איש/ת הקשר זיהה/תה אותה דרך ועד חינוך מקומי. ידועה כתומכת במטרות ילדים. טרם בוצע פנייה." } }
 ];
 
 const INTERACTIONS = [
   // Michael Goldstein (4)
-  { id:1,  donorId:1, date:"2026-01-10", type:"email",    summary:"Initial outreach email with ICEE overview", details:"Sent comprehensive overview of ICEE mission, school impact data, and Chicago campaign goals. Personalized based on his JUF board involvement." },
-  { id:2,  donorId:1, date:"2026-01-18", type:"call",     summary:"Follow-up call — strong interest expressed", details:"30-minute call. He recalled seeing ICEE mentioned at a JUF event. Asked about governance structure and fund allocation. Very engaged." },
-  { id:3,  donorId:1, date:"2026-02-01", type:"email",    summary:"Sent detailed program report and financials", details:"Per his request, sent audited financials, program impact report, and a 2-page summary of the Chicago campaign strategy." },
-  { id:4,  donorId:1, date:"2026-02-12", type:"meeting",  summary:"In-person meeting at Standard Club", details:"Met at Standard Club for lunch. Bo Asher joined. 90-minute conversation. He's impressed with the model. Wants to see school visit data and talk to an Israeli school principal before deciding. Very warm." },
+  { id:1,  donorId:1, date:"2026-01-10", type:"email",
+    summary:{ en:"Initial outreach email with ICEE overview", he:"אימייל פנייה ראשוני עם סקירת המרכז" },
+    details:{ en:"Sent comprehensive overview of ICEE mission, school impact data, and Chicago campaign goals. Personalized based on his JUF board involvement.", he:"נשלחה סקירה מקיפה של משימת המרכז, נתוני השפעה מבתי ספר ומטרות קמפיין שיקגו. מותאם אישית על בסיס מעורבותו בדירקטוריון JUF." } },
+  { id:2,  donorId:1, date:"2026-01-18", type:"call",
+    summary:{ en:"Follow-up call — strong interest expressed", he:"שיחת מעקב — הביע עניין חזק" },
+    details:{ en:"30-minute call. He recalled seeing ICEE mentioned at a JUF event. Asked about governance structure and fund allocation. Very engaged.", he:"שיחה של 30 דקות. הוא זכר שראה אזכור של המרכז באירוע JUF. שאל על מבנה הממשל והקצאת כספים. מאוד מעורב." } },
+  { id:3,  donorId:1, date:"2026-02-01", type:"email",
+    summary:{ en:"Sent detailed program report and financials", he:"נשלח דו״ח תוכנית מפורט ודוחות כספיים" },
+    details:{ en:"Per his request, sent audited financials, program impact report, and a 2-page summary of the Chicago campaign strategy.", he:"לפי בקשתו, נשלחו דוחות כספיים מבוקרים, דו״ח השפעת תוכנית וסיכום של 2 עמודים של אסטרטגיית קמפיין שיקגו." } },
+  { id:4,  donorId:1, date:"2026-02-12", type:"meeting",
+    summary:{ en:"In-person meeting at Standard Club", he:"פגישה אישית בסטנדרד קלאב" },
+    details:{ en:"Met at Standard Club for lunch. Bo Asher z\"l joined. 90-minute conversation. He's impressed with the model. Wants to see school visit data and talk to an Israeli school principal before deciding. Very warm.", he:"נפגשנו בסטנדרד קלאב לארוחת צהריים. בו אשר ז״ל הצטרף. שיחה של 90 דקות. התרשם מהמודל. רוצה לראות נתוני ביקורי בתי ספר ולדבר עם מנהל בית ספר ישראלי לפני החלטה. מאוד חם." } },
 
   // Rachel Steinberg (3)
-  { id:5,  donorId:2, date:"2026-01-15", type:"call",     summary:"Introductory call via Bo Asher connection", details:"Bo Asher made the introduction by phone, then handed off. 20-minute call. She's interested in the scalability angle." },
-  { id:6,  donorId:2, date:"2026-01-28", type:"meeting",  summary:"Zoom presentation — detailed Q&A", details:"45-minute Zoom. Walked through the full presentation. She asked about measurement methodology, cost per student, and expansion plans. Very analytical." },
-  { id:7,  donorId:2, date:"2026-02-15", type:"email",    summary:"Sent impact metrics and budget breakdown", details:"Follow-up from Zoom with requested materials: per-school cost breakdown, student achievement data, 3-year projections. Awaiting her review." },
+  { id:5,  donorId:2, date:"2026-01-15", type:"call",
+    summary:{ en:"Introductory call via Bo Asher z\"l connection", he:"שיחת היכרות דרך הקשר של בו אשר ז״ל" },
+    details:{ en:"Bo Asher z\"l made the introduction by phone, then handed off. 20-minute call. She's interested in the scalability angle.", he:"בו אשר ז״ל ביצע את ההיכרות בטלפון, ואז העביר. שיחה של 20 דקות. היא מעוניינת בזווית הסקלביליות." } },
+  { id:6,  donorId:2, date:"2026-01-28", type:"meeting",
+    summary:{ en:"Zoom presentation — detailed Q&A", he:"מצגת זום — שאלות ותשובות מפורטות" },
+    details:{ en:"45-minute Zoom. Walked through the full presentation. She asked about measurement methodology, cost per student, and expansion plans. Very analytical.", he:"זום של 45 דקות. עברנו על המצגת המלאה. שאלה על מתודולוגיית מדידה, עלות לתלמיד ותוכניות הרחבה. מאוד אנליטית." } },
+  { id:7,  donorId:2, date:"2026-02-15", type:"email",
+    summary:{ en:"Sent impact metrics and budget breakdown", he:"נשלחו מדדי השפעה ופירוט תקציב" },
+    details:{ en:"Follow-up from Zoom with requested materials: per-school cost breakdown, student achievement data, 3-year projections. Awaiting her review.", he:"מעקב אחרי הזום עם חומרים שנדרשו: פירוט עלויות לבית ספר, נתוני הישגי תלמידים, תחזיות ל-3 שנים. ממתינים לסקירה שלה." } },
 
   // David Abramson (2)
-  { id:8,  donorId:3, date:"2026-02-05", type:"email",    summary:"Introduction email from contact person", details:"Contact person sent a warm introduction email. Included brief ICEE summary and proposed meeting." },
-  { id:9,  donorId:3, date:"2026-02-18", type:"call",     summary:"Call with secretary to schedule meeting", details:"Spoke with his assistant. Meeting confirmed for Feb 27 at his office, 10:00 AM. 45-minute slot. He requested a one-page summary in advance." },
+  { id:8,  donorId:3, date:"2026-02-05", type:"email",
+    summary:{ en:"Introduction email from contact person", he:"אימייל היכרות מאיש/ת הקשר" },
+    details:{ en:"Contact person sent a warm introduction email. Included brief ICEE summary and proposed meeting.", he:"איש/ת הקשר שלח/ה אימייל היכרות חם. כלל סיכום קצר של המרכז והצעה לפגישה." } },
+  { id:9,  donorId:3, date:"2026-02-18", type:"call",
+    summary:{ en:"Call with secretary to schedule meeting", he:"שיחה עם מזכירה לקביעת פגישה" },
+    details:{ en:"Spoke with his assistant. Meeting confirmed for Feb 27 at his office, 10:00 AM. 45-minute slot. He requested a one-page summary in advance.", he:"שוחחנו עם העוזרת שלו. פגישה אושרה ל-27 בפברואר במשרדו, 10:00 בבוקר. 45 דקות. ביקש סיכום של עמוד אחד מראש." } },
 
   // Jonathan Wexler (2)
-  { id:10, donorId:4, date:"2026-01-22", type:"email",    summary:"Outreach email via Bo Asher introduction", details:"Bo Asher sent a personal email introducing ICEE. Followed up with formal overview materials." },
-  { id:11, donorId:4, date:"2026-02-03", type:"email",    summary:"Positive response — requesting more info", details:"He replied expressing interest. Asked about tax implications of donations and program specifics. Preparing detailed response." },
+  { id:10, donorId:4, date:"2026-01-22", type:"email",
+    summary:{ en:"Outreach email via Bo Asher z\"l introduction", he:"אימייל פנייה דרך היכרות בו אשר ז״ל" },
+    details:{ en:"Bo Asher z\"l sent a personal email introducing ICEE. Followed up with formal overview materials.", he:"בו אשר ז״ל שלח אימייל אישי להצגת המרכז. מעקב עם חומרי סקירה רשמיים." } },
+  { id:11, donorId:4, date:"2026-02-03", type:"email",
+    summary:{ en:"Positive response — requesting more info", he:"תגובה חיובית — מבקש מידע נוסף" },
+    details:{ en:"He replied expressing interest. Asked about tax implications of donations and program specifics. Preparing detailed response.", he:"הוא השיב והביע עניין. שאל על השלכות מס של תרומות ופרטי תוכנית. מכינים תגובה מפורטת." } },
 
   // Susan Levine (4)
-  { id:12, donorId:5, date:"2025-12-15", type:"call",     summary:"Initial outreach call through Bo Asher", details:"Bo Asher called together with her. She was already familiar with ICEE from a friend. Very warm reception." },
-  { id:13, donorId:5, date:"2026-01-05", type:"meeting",  summary:"Lunch meeting at her home in Winnetka", details:"Invited to her home. 2-hour conversation over lunch. She toured Israel 5 years ago and visited an ICEE school. Deeply moved by the experience." },
-  { id:14, donorId:5, date:"2026-01-20", type:"call",     summary:"Follow-up call — discussing commitment level", details:"She expressed readiness to commit. Discussed $100K over 2 years. She wants recognition at an event." },
-  { id:15, donorId:5, date:"2026-02-01", type:"email",    summary:"Formal commitment letter — $100K/2 years", details:"Sent and received signed commitment letter. $50K first installment expected by March. She also offered to host a parlor meeting." },
+  { id:12, donorId:5, date:"2025-12-15", type:"call",
+    summary:{ en:"Initial outreach call through Bo Asher z\"l", he:"שיחת פנייה ראשונית דרך בו אשר ז״ל" },
+    details:{ en:"Bo Asher z\"l called together with her. She was already familiar with ICEE from a friend. Very warm reception.", he:"בו אשר ז״ל התקשר יחד איתה. היא כבר הכירה את המרכז מחברה. קבלת פנים חמה מאוד." } },
+  { id:13, donorId:5, date:"2026-01-05", type:"meeting",
+    summary:{ en:"Lunch meeting at her home in Winnetka", he:"פגישת ארוחת צהריים בביתה בווינטקה" },
+    details:{ en:"Invited to her home. 2-hour conversation over lunch. She toured Israel 5 years ago and visited an ICEE school. Deeply moved by the experience.", he:"הוזמנו לביתה. שיחה של שעתיים על ארוחת צהריים. היא ביקרה בישראל לפני 5 שנים ופקדה בית ספר של המרכז. מאוד מרוגשת מהחוויה." } },
+  { id:14, donorId:5, date:"2026-01-20", type:"call",
+    summary:{ en:"Follow-up call — discussing commitment level", he:"שיחת מעקב — דיון ברמת ההתחייבות" },
+    details:{ en:"She expressed readiness to commit. Discussed $100K over 2 years. She wants recognition at an event.", he:"הביעה נכונות להתחייב. דנו ב-$100K על פני שנתיים. היא רוצה הכרה באירוע." } },
+  { id:15, donorId:5, date:"2026-02-01", type:"email",
+    summary:{ en:"Formal commitment letter — $100K/2 years", he:"מכתב התחייבות רשמי — $100K/שנתיים" },
+    details:{ en:"Sent and received signed commitment letter. $50K first installment expected by March. She also offered to host a parlor meeting.", he:"נשלח והתקבל מכתב התחייבות חתום. תשלום ראשון של $50K צפוי עד מרץ. גם הציעה לארח מפגש סלוני." } },
 
   // Robert Katz (3)
-  { id:16, donorId:6, date:"2026-01-12", type:"email",    summary:"Board referral — introductory email", details:"Board member sent introduction. Followed up with ICEE overview and annual report." },
-  { id:17, donorId:6, date:"2026-01-25", type:"meeting",  summary:"Zoom meeting — interested but cautious", details:"30-minute Zoom. He likes the concept but wants to see schools in person. Has a trip to Israel planned for April." },
-  { id:18, donorId:6, date:"2026-02-10", type:"call",     summary:"Call to discuss Israel visit logistics", details:"Discussed coordinating his April Israel trip with school visits. He's bringing his wife. Will confirm dates by end of February." },
+  { id:16, donorId:6, date:"2026-01-12", type:"email",
+    summary:{ en:"Board referral — introductory email", he:"הפניית דירקטוריון — אימייל היכרות" },
+    details:{ en:"Board member sent introduction. Followed up with ICEE overview and annual report.", he:"חבר דירקטוריון שלח היכרות. מעקב עם סקירת המרכז ודו״ח שנתי." } },
+  { id:17, donorId:6, date:"2026-01-25", type:"meeting",
+    summary:{ en:"Zoom meeting — interested but cautious", he:"פגישת זום — מעוניין אך זהיר" },
+    details:{ en:"30-minute Zoom. He likes the concept but wants to see schools in person. Has a trip to Israel planned for April.", he:"זום של 30 דקות. הוא אוהב את הרעיון אך רוצה לראות בתי ספר באופן אישי. מתכנן נסיעה לישראל באפריל." } },
+  { id:18, donorId:6, date:"2026-02-10", type:"call",
+    summary:{ en:"Call to discuss Israel visit logistics", he:"שיחה לדיון בלוגיסטיקת ביקור בישראל" },
+    details:{ en:"Discussed coordinating his April Israel trip with school visits. He's bringing his wife. Will confirm dates by end of February.", he:"דנו בתיאום הנסיעה שלו לישראל באפריל עם ביקורי בתי ספר. הוא מביא את אשתו. יאשר תאריכים עד סוף פברואר." } },
 
   // Daniel Friedman (1)
-  { id:19, donorId:7, date:"2026-02-17", type:"email",    summary:"Contact person sent introductory email", details:"Contact person identified him at a community education forum. Sent initial outreach email with ICEE one-pager." },
+  { id:19, donorId:7, date:"2026-02-17", type:"email",
+    summary:{ en:"Contact person sent introductory email", he:"איש/ת הקשר שלח/ה אימייל היכרות" },
+    details:{ en:"Contact person identified him at a community education forum. Sent initial outreach email with ICEE one-pager.", he:"איש/ת הקשר זיהה/תה אותו בפורום חינוך קהילתי. נשלח אימייל פנייה ראשוני עם עמוד מידע של המרכז." } },
 
   // Laura Shapiro (2)
-  { id:20, donorId:8, date:"2026-02-01", type:"call",     summary:"Contact person intro call — very interested", details:"Contact person met her at a charity gala. Made an introductory call. She's very interested in education innovation. Asked for a meeting." },
-  { id:21, donorId:8, date:"2026-02-14", type:"email",    summary:"Meeting confirmation for March 3", details:"Confirmed meeting at her office, March 3 at 2:00 PM. She requested a 15-minute presentation followed by discussion. Preparing tailored deck." },
+  { id:20, donorId:8, date:"2026-02-01", type:"call",
+    summary:{ en:"Contact person intro call — very interested", he:"שיחת היכרות של איש/ת הקשר — מעוניינת מאוד" },
+    details:{ en:"Contact person met her at a charity gala. Made an introductory call. She's very interested in education innovation. Asked for a meeting.", he:"איש/ת הקשר פגש/ה אותה באירוע צדקה. בוצעה שיחת היכרות. היא מאוד מעוניינת בחדשנות חינוכית. ביקשה פגישה." } },
+  { id:21, donorId:8, date:"2026-02-14", type:"email",
+    summary:{ en:"Meeting confirmation for March 3", he:"אישור פגישה ל-3 במרץ" },
+    details:{ en:"Confirmed meeting at her office, March 3 at 2:00 PM. She requested a 15-minute presentation followed by discussion. Preparing tailored deck.", he:"פגישה אושרה במשרדה, 3 במרץ ב-14:00. ביקשה מצגת של 15 דקות ולאחריה דיון. מכינים מצגת מותאמת." } },
 
   // Steven Rosen (2)
-  { id:22, donorId:9, date:"2026-01-30", type:"meeting",  summary:"Met at JUF annual dinner", details:"Brief 10-minute conversation at the JUF dinner. Exchanged cards. He mentioned interest in STEM education programs." },
-  { id:23, donorId:9, date:"2026-02-08", type:"email",    summary:"Follow-up email with STEM program details", details:"Sent detailed info about ICEE's STEM tracks, including robotics and computer science programs. Waiting for response." },
+  { id:22, donorId:9, date:"2026-01-30", type:"meeting",
+    summary:{ en:"Met at JUF annual dinner", he:"נפגשנו בארוחת JUF השנתית" },
+    details:{ en:"Brief 10-minute conversation at the JUF dinner. Exchanged cards. He mentioned interest in STEM education programs.", he:"שיחה קצרה של 10 דקות בארוחת JUF. החלפנו כרטיסי ביקור. ציין עניין בתוכניות חינוך STEM." } },
+  { id:23, donorId:9, date:"2026-02-08", type:"email",
+    summary:{ en:"Follow-up email with STEM program details", he:"אימייל מעקב עם פרטי תוכנית STEM" },
+    details:{ en:"Sent detailed info about ICEE's STEM tracks, including robotics and computer science programs. Waiting for response.", he:"נשלח מידע מפורט על מסלולי STEM של המרכז, כולל תוכניות רובוטיקה ומדעי המחשב. ממתינים לתגובה." } },
 
   // Amy Berkowitz (1)
-  { id:24, donorId:10, date:"2026-02-19", type:"email",   summary:"Initial outreach email", details:"Contact person identified her through community involvement. Sent introductory email with program overview." },
+  { id:24, donorId:10, date:"2026-02-19", type:"email",
+    summary:{ en:"Initial outreach email", he:"אימייל פנייה ראשוני" },
+    details:{ en:"Contact person identified her through community involvement. Sent introductory email with program overview.", he:"איש/ת הקשר זיהה/תה אותה דרך מעורבות קהילתית. נשלח אימייל היכרות עם סקירת תוכנית." } },
 
   // Howard Levin (3)
-  { id:25, donorId:11, date:"2026-01-08", type:"call",    summary:"Bo Asher reconnected — warm lead", details:"Bo Asher has known him for 15 years. Called to reconnect and mentioned ICEE. Levin said he visited an ICEE school during a Birthright follow-up trip." },
-  { id:26, donorId:11, date:"2026-01-22", type:"meeting", summary:"Dinner meeting at Gibson's Bar", details:"Bo Asher, ICEE director, and Levin at Gibson's. 2-hour dinner. He shared his Israel experience and was very moved. Wants to involve his family office." },
-  { id:27, donorId:11, date:"2026-02-08", type:"email",   summary:"Sent proposal to family office", details:"Formal proposal sent to his family office manager. Included 3-year partnership proposal with naming opportunities. Awaiting internal review." },
+  { id:25, donorId:11, date:"2026-01-08", type:"call",
+    summary:{ en:"Bo Asher z\"l reconnected — warm lead", he:"בו אשר ז״ל חידש קשר — ליד חם" },
+    details:{ en:"Bo Asher z\"l had known him for 15 years. Called to reconnect and mentioned ICEE. Levin said he visited an ICEE school during a Birthright follow-up trip.", he:"בו אשר ז״ל הכיר אותו 15 שנה. התקשר לחדש קשר והזכיר את המרכז. לוין אמר שביקר בבית ספר של המרכז במהלך נסיעת המשך של תגלית." } },
+  { id:26, donorId:11, date:"2026-01-22", type:"meeting",
+    summary:{ en:"Dinner meeting at Gibson's Bar", he:"פגישת ארוחת ערב בגיבסונ׳ס" },
+    details:{ en:"Bo Asher z\"l, ICEE director, and Levin at Gibson's. 2-hour dinner. He shared his Israel experience and was very moved. Wants to involve his family office.", he:"בו אשר ז״ל, מנהלת המרכז ולוין בגיבסונ׳ס. ארוחת ערב של שעתיים. שיתף את חוויית ישראל שלו ומאוד התרגש. רוצה לערב את המשרד המשפחתי." } },
+  { id:27, donorId:11, date:"2026-02-08", type:"email",
+    summary:{ en:"Sent proposal to family office", he:"נשלחה הצעה למשרד המשפחתי" },
+    details:{ en:"Formal proposal sent to his family office manager. Included 3-year partnership proposal with naming opportunities. Awaiting internal review.", he:"הצעה רשמית נשלחה למנהל המשרד המשפחתי. כללה הצעת שותפות ל-3 שנים עם הזדמנויות שם. ממתינים לסקירה פנימית." } },
 
   // Barbara Schwartz (1)
-  { id:28, donorId:12, date:"2026-02-06", type:"email",   summary:"Post-event follow-up email", details:"Met briefly at a North Shore community event. Sent introductory email with ICEE materials. She responded acknowledging receipt." },
+  { id:28, donorId:12, date:"2026-02-06", type:"email",
+    summary:{ en:"Post-event follow-up email", he:"אימייל מעקב לאחר אירוע" },
+    details:{ en:"Met briefly at a North Shore community event. Sent introductory email with ICEE materials. She responded acknowledging receipt.", he:"נפגשנו בקצרה באירוע קהילתי בנורת׳ שור. נשלח אימייל היכרות עם חומרי המרכז. היא הגיבה ואישרה קבלה." } },
 
   // Mark Greenberg (2)
-  { id:29, donorId:13, date:"2026-01-30", type:"call",    summary:"Bo Asher reconnected at NYC conference", details:"Bo Asher ran into him at an investment conference in NYC. Discussed ICEE briefly. Greenberg has Chicago family roots and gives heavily to education." },
-  { id:30, donorId:13, date:"2026-02-16", type:"email",   summary:"Zoom meeting scheduled for Feb 28", details:"Confirmed Zoom meeting Feb 28 at 11:00 AM EST. He requested a condensed presentation. His assistant will also join." },
+  { id:29, donorId:13, date:"2026-01-30", type:"call",
+    summary:{ en:"Bo Asher z\"l reconnected at NYC conference", he:"בו אשר ז״ל חידש קשר בכנס בניו יורק" },
+    details:{ en:"Bo Asher z\"l ran into him at an investment conference in NYC. Discussed ICEE briefly. Greenberg has Chicago family roots and gives heavily to education.", he:"בו אשר ז״ל נתקל בו בכנס השקעות בניו יורק. דנו בקצרה על המרכז. לגרינברג שורשים משפחתיים בשיקגו והוא תורם רבות לחינוך." } },
+  { id:30, donorId:13, date:"2026-02-16", type:"email",
+    summary:{ en:"Zoom meeting scheduled for Feb 28", he:"פגישת זום נקבעה ל-28 בפברואר" },
+    details:{ en:"Confirmed Zoom meeting Feb 28 at 11:00 AM EST. He requested a condensed presentation. His assistant will also join.", he:"אושרה פגישת זום ב-28 בפברואר ב-11:00 שעון מזרח ארה״ב. ביקש מצגת מקוצרת. גם העוזרת שלו תצטרף." } },
 
   // Jeffrey Rubin (1)
-  { id:31, donorId:15, date:"2026-02-11", type:"call",    summary:"Initial call — receptive but busy", details:"Contact person arranged an intro call. 10 minutes. He's familiar with ICEE by name. Currently swamped — asked to reconnect in 2 weeks." },
+  { id:31, donorId:15, date:"2026-02-11", type:"call",
+    summary:{ en:"Initial call — receptive but busy", he:"שיחה ראשונית — מקבל אך עסוק" },
+    details:{ en:"Contact person arranged an intro call. 10 minutes. He's familiar with ICEE by name. Currently swamped — asked to reconnect in 2 weeks.", he:"איש/ת הקשר סידר/ה שיחת היכרות. 10 דקות. הוא מכיר את המרכז בשם. כרגע מאוד עסוק — ביקש לחזור בעוד שבועיים." } },
 
   // Miriam Adler (3)
-  { id:32, donorId:16, date:"2026-01-05", type:"call",    summary:"Bo Asher introduction call", details:"Bo Asher introduced her by phone. She already knew about ICEE through a friend in Israel. Very aligned with the mission." },
-  { id:33, donorId:16, date:"2026-01-18", type:"meeting", summary:"Coffee meeting at Intelligentsia", details:"Met at Intelligentsia Coffee in Chicago. 1-hour meeting. She runs a fund focused on women in education. Perfect alignment." },
-  { id:34, donorId:16, date:"2026-02-05", type:"email",   summary:"Formal pledge — $50K/year × 3 years", details:"Sent signed pledge form. $50K annually for 3 years, designated for ICEE's women-in-STEM track. First payment due April 1." },
+  { id:32, donorId:16, date:"2026-01-05", type:"call",
+    summary:{ en:"Bo Asher z\"l introduction call", he:"שיחת היכרות של בו אשר ז״ל" },
+    details:{ en:"Bo Asher z\"l introduced her by phone. She already knew about ICEE through a friend in Israel. Very aligned with the mission.", he:"בו אשר ז״ל הציג אותה בטלפון. היא כבר הכירה את המרכז דרך חברה בישראל. מאוד מיושרת עם המשימה." } },
+  { id:33, donorId:16, date:"2026-01-18", type:"meeting",
+    summary:{ en:"Coffee meeting at Intelligentsia", he:"פגישת קפה באינטליג׳נסיה" },
+    details:{ en:"Met at Intelligentsia Coffee in Chicago. 1-hour meeting. She runs a fund focused on women in education. Perfect alignment.", he:"נפגשנו באינטליג׳נסיה קפה בשיקגו. פגישה של שעה. היא מנהלת קרן המתמקדת בנשים בחינוך. התאמה מושלמת." } },
+  { id:34, donorId:16, date:"2026-02-05", type:"email",
+    summary:{ en:"Formal pledge — $50K/year × 3 years", he:"התחייבות רשמית — $50K לשנה × 3 שנים" },
+    details:{ en:"Sent signed pledge form. $50K annually for 3 years, designated for ICEE's women-in-STEM track. First payment due April 1.", he:"נשלח טופס התחייבות חתום. $50K בשנה ל-3 שנים, מיועד למסלול נשים ב-STEM של המרכז. תשלום ראשון עד 1 באפריל." } },
 
   // Nathan Bloom (2)
-  { id:35, donorId:17, date:"2026-01-14", type:"call",    summary:"Introductory call — initially interested", details:"Bo Asher arranged the call. Bloom was initially interested and asked about program details." },
-  { id:36, donorId:17, date:"2026-02-04", type:"call",    summary:"Follow-up — declined due to shifting priorities", details:"Called to follow up. He apologized — family medical situation shifted his giving priorities entirely to healthcare. Said to check back in a year." },
+  { id:35, donorId:17, date:"2026-01-14", type:"call",
+    summary:{ en:"Introductory call — initially interested", he:"שיחת היכרות — עניין ראשוני" },
+    details:{ en:"Bo Asher z\"l arranged the call. Bloom was initially interested and asked about program details.", he:"בו אשר ז״ל סידר את השיחה. בלום הביע עניין ראשוני ושאל על פרטי התוכנית." } },
+  { id:36, donorId:17, date:"2026-02-04", type:"call",
+    summary:{ en:"Follow-up — declined due to shifting priorities", he:"מעקב — סירב בשל שינוי סדרי עדיפויות" },
+    details:{ en:"Called to follow up. He apologized — family medical situation shifted his giving priorities entirely to healthcare. Said to check back in a year.", he:"התקשרנו למעקב. הוא התנצל — מצב רפואי משפחתי הסיט את סדרי העדיפויות שלו לבריאות. אמר לחזור בעוד שנה." } },
 
   // Alan Hoffman (2)
-  { id:37, donorId:19, date:"2026-01-28", type:"meeting", summary:"Brief conversation at community event", details:"Met at a local Jewish federation event. 5-minute conversation. He expressed interest in education causes and asked for more info." },
-  { id:38, donorId:19, date:"2026-02-13", type:"call",    summary:"Follow-up call — interested in smaller gift", details:"15-minute call. Interested in a smaller contribution ($5-10K range). Also offered to connect ICEE with some of his accounting clients who might be interested." }
+  { id:37, donorId:19, date:"2026-01-28", type:"meeting",
+    summary:{ en:"Brief conversation at community event", he:"שיחה קצרה באירוע קהילתי" },
+    details:{ en:"Met at a local Jewish federation event. 5-minute conversation. He expressed interest in education causes and asked for more info.", he:"נפגשנו באירוע פדרציה יהודית מקומית. שיחה של 5 דקות. הביע עניין במטרות חינוך וביקש מידע נוסף." } },
+  { id:38, donorId:19, date:"2026-02-13", type:"call",
+    summary:{ en:"Follow-up call — interested in smaller gift", he:"שיחת מעקב — מעוניין בתרומה קטנה" },
+    details:{ en:"15-minute call. Interested in a smaller contribution ($5-10K range). Also offered to connect ICEE with some of his accounting clients who might be interested.", he:"שיחה של 15 דקות. מעוניין בתרומה קטנה יותר ($5-10K). גם הציע לחבר את המרכז עם כמה מלקוחות הנה״ח שלו שעשויים להתעניין." } }
 ];
 
 // ═══════════════════════════════════════════════════
@@ -659,11 +889,20 @@ const TYPE_CSS     = { call:"icon-call", email:"icon-email", meeting:"icon-meeti
 
 function formatDate(d) {
   const dt = new Date(d + "T00:00:00");
-  return dt.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+  const locale = LANG === 'he' ? 'he-IL' : 'en-US';
+  return dt.toLocaleDateString(locale, { month:'short', day:'numeric', year:'numeric' });
 }
+
 function getDonor(id) { return DONORS.find(d => d.id === id); }
 function getDonorInteractions(id) { return INTERACTIONS.filter(i => i.donorId === id).sort((a,b) => b.date.localeCompare(a.date)); }
 function escHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+// Get localized text from a {he,en} object or plain string
+function loc(val) {
+  if (!val) return '';
+  if (typeof val === 'string') return val;
+  return val[LANG] || val.en || '';
+}
 
 // ═══════════════════════════════════════════════════
 // DASHBOARD TAB
@@ -674,58 +913,66 @@ function renderDashboard() {
   const meetingsThisMonth = INTERACTIONS.filter(i => i.type === "meeting" && i.date.startsWith("2026-02"));
   const conversionRate = ((committedDonors.length / DONORS.length) * 100).toFixed(0);
 
-  // Upcoming: scheduled meetings + follow-ups needed
-  const upcoming = [
-    { icon:"\u{1F91D}", text:"Meeting with David Abramson", meta:"Feb 27 — Abramson Holdings office" },
-    { icon:"\u{1F91D}", text:"Zoom with Mark Greenberg", meta:"Feb 28 — 11:00 AM EST" },
-    { icon:"\u{1F91D}", text:"Meeting with Laura Shapiro", meta:"Mar 3 — Shapiro Media Group office" },
+  const upcoming_he = [
+    { icon:"\u{1F91D}", text:"\u05E4\u05D2\u05D9\u05E9\u05D4 \u05E2\u05DD David Abramson", meta:"27 \u05D1\u05E4\u05D1\u05E8\u05D5\u05D0\u05E8 \u2014 \u05DE\u05E9\u05E8\u05D3\u05D9 Abramson Holdings" },
+    { icon:"\u{1F91D}", text:"\u05D6\u05D5\u05DD \u05E2\u05DD Mark Greenberg", meta:"28 \u05D1\u05E4\u05D1\u05E8\u05D5\u05D0\u05E8 \u2014 11:00 \u05E9\u05E2\u05D5\u05DF \u05DE\u05D6\u05E8\u05D7 \u05D0\u05E8\u05D4\u05F4\u05D1" },
+    { icon:"\u{1F91D}", text:"\u05E4\u05D2\u05D9\u05E9\u05D4 \u05E2\u05DD Laura Shapiro", meta:"3 \u05D1\u05DE\u05E8\u05E5 \u2014 \u05DE\u05E9\u05E8\u05D3\u05D9 Shapiro Media Group" },
+    { icon:"\u{1F504}", text:"\u05DE\u05E2\u05E7\u05D1 \u05E2\u05DD Rachel Steinberg", meta:"\u05DE\u05DE\u05EA\u05D9\u05E0\u05D4 \u05DC\u05E1\u05E7\u05D9\u05E8\u05EA \u05DE\u05D3\u05D3\u05D9 \u05D4\u05E9\u05E4\u05E2\u05D4" },
+    { icon:"\u{1F504}", text:"\u05DE\u05E2\u05E7\u05D1 \u05E2\u05DD Robert Katz", meta:"\u05D0\u05D9\u05E9\u05D5\u05E8 \u05EA\u05D0\u05E8\u05D9\u05DB\u05D9 \u05D1\u05D9\u05E7\u05D5\u05E8 \u05D9\u05E9\u05E8\u05D0\u05DC \u05D1\u05D0\u05E4\u05E8\u05D9\u05DC" },
+    { icon:"\u{1F504}", text:"\u05DC\u05D7\u05D6\u05D5\u05E8 \u05DC-Jeffrey Rubin", meta:"\u05D1\u05D9\u05E7\u05E9 \u05DC\u05D7\u05D6\u05D5\u05E8 \u05D1\u05E2\u05D5\u05D3 \u05E9\u05D1\u05D5\u05E2\u05D9\u05D9\u05DD (\u05DE-11 \u05D1\u05E4\u05D1\u05E8\u05D5\u05D0\u05E8)" },
+  ];
+  const upcoming_en = [
+    { icon:"\u{1F91D}", text:"Meeting with David Abramson", meta:"Feb 27 \u2014 Abramson Holdings office" },
+    { icon:"\u{1F91D}", text:"Zoom with Mark Greenberg", meta:"Feb 28 \u2014 11:00 AM EST" },
+    { icon:"\u{1F91D}", text:"Meeting with Laura Shapiro", meta:"Mar 3 \u2014 Shapiro Media Group office" },
     { icon:"\u{1F504}", text:"Follow up with Rachel Steinberg", meta:"Awaiting review of impact metrics" },
     { icon:"\u{1F504}", text:"Follow up with Robert Katz", meta:"Confirm April Israel visit dates" },
     { icon:"\u{1F504}", text:"Reconnect with Jeffrey Rubin", meta:"He asked to talk again in 2 weeks (from Feb 11)" },
   ];
+  const upcoming = LANG === 'he' ? upcoming_he : upcoming_en;
 
   const recentActivity = INTERACTIONS
     .sort((a,b) => b.date.localeCompare(a.date))
     .slice(0, 6)
     .map(i => {
       const donor = getDonor(i.donorId);
-      return { icon: TYPE_ICONS[i.type] || "\u{1F4CB}", text: `${donor.name} — ${i.summary}`, meta: formatDate(i.date) };
+      return { icon: TYPE_ICONS[i.type] || "\u{1F4CB}", text: `${donor.name} \u2014 ${loc(i.summary)}`, meta: formatDate(i.date) };
     });
 
   const teamSummary = [
-    { icon:"\u{1F464}", text:"Bo Asher", meta:"10 prospects sourced \u00B7 2 committed \u00B7 3 meetings arranged" },
-    { icon:"\u{1F464}", text:"Contact Person", meta:"7 prospects identified \u00B7 2 meetings scheduled" },
-    { icon:"\u{1F4CB}", text:"Board Referrals", meta:"2 referrals \u00B7 1 in follow-up" },
-    { icon:"\u{1F3AB}", text:"Events", meta:"3 prospects from events \u00B7 1 in follow-up" },
+    { icon:"\u{1F464}", text:t('teamBoAsher'), meta:t('teamBoMeta') },
+    { icon:"\u{1F464}", text:t('teamContact'), meta:t('teamContactMeta') },
+    { icon:"\u{1F4CB}", text:t('teamBoard'), meta:t('teamBoardMeta') },
+    { icon:"\u{1F3AB}", text:t('teamEvents'), meta:t('teamEventsMeta') },
   ];
 
   const el = document.getElementById('tab-dashboard');
   el.innerHTML = `
     <div class="stats-grid">
-      <div class="stat-card"><div class="label">Total Prospects</div><div class="value">20</div><div class="sub">7 stages in pipeline</div></div>
-      <div class="stat-card"><div class="label">Meetings This Month</div><div class="value">${meetingsThisMonth.length + 3}</div><div class="sub">${meetingsThisMonth.length} completed \u00B7 3 upcoming</div></div>
-      <div class="stat-card"><div class="label">Pipeline Value</div><div class="value">~$4.2M</div><div class="sub">Based on capacity estimates</div></div>
-      <div class="stat-card"><div class="label">Conversion Rate</div><div class="value">${conversionRate}%</div><div class="sub">${committedDonors.length} committed of ${DONORS.length}</div></div>
+      <div class="stat-card"><div class="label">${t('totalProspects')}</div><div class="value">20</div><div class="sub">${t('stagesInPipeline')}</div></div>
+      <div class="stat-card"><div class="label">${t('meetingsThisMonth')}</div><div class="value">${meetingsThisMonth.length + 3}</div><div class="sub">${meetingsThisMonth.length} ${t('completed')} \u00B7 3 ${t('upcoming')}</div></div>
+      <div class="stat-card"><div class="label">${t('pipelineValue')}</div><div class="value">~$4.2M</div><div class="sub">${t('basedOnCapacity')}</div></div>
+      <div class="stat-card"><div class="label">${t('conversionRate')}</div><div class="value">${conversionRate}%</div><div class="sub">${committedDonors.length} ${t('committedOf')} ${DONORS.length}</div></div>
     </div>
     <div class="dash-grid">
       <div class="dash-section">
-        <h3>Upcoming Meetings & Follow-ups</h3>
+        <h3>${t('upcomingSection')}</h3>
         ${upcoming.map(u => `<div class="dash-item"><span class="icon">${u.icon}</span><div><div>${escHtml(u.text)}</div><div class="meta">${escHtml(u.meta)}</div></div></div>`).join('')}
       </div>
       <div class="dash-section">
-        <h3>Recent Activity</h3>
+        <h3>${t('recentActivity')}</h3>
         ${recentActivity.map(a => `<div class="dash-item"><span class="icon">${a.icon}</span><div><div>${escHtml(a.text)}</div><div class="meta">${a.meta}</div></div></div>`).join('')}
       </div>
       <div class="dash-section">
-        <h3>Team Summary</h3>
-        ${teamSummary.map(t => `<div class="dash-item"><span class="icon">${t.icon}</span><div><div>${escHtml(t.text)}</div><div class="meta">${escHtml(t.meta)}</div></div></div>`).join('')}
+        <h3>${t('teamSummary')}</h3>
+        ${teamSummary.map(tm => `<div class="dash-item"><span class="icon">${tm.icon}</span><div><div>${escHtml(tm.text)}</div><div class="meta">${escHtml(tm.meta)}</div></div></div>`).join('')}
       </div>
       <div class="dash-section">
-        <h3>Pipeline Snapshot</h3>
+        <h3>${t('pipelineSnapshot')}</h3>
         ${STATUS_ORDER.map(s => {
           const count = DONORS.filter(d => d.status === s).length;
           const pct = ((count / DONORS.length) * 100).toFixed(0);
-          return `<div class="dash-item"><span class="pill ${STATUS_CLASS[s]}">${s}</span><div style="flex:1;display:flex;align-items:center;gap:8px;margin-left:8px"><div style="flex:1;height:8px;background:#e5e7eb;border-radius:4px"><div style="width:${pct}%;height:100%;border-radius:4px;background:var(--blue);opacity:0.7"></div></div><span style="font-size:13px;font-weight:600;min-width:16px">${count}</span></div></div>`;
+          return `<div class="dash-item"><span class="pill ${STATUS_CLASS[s]}">${tStatus(s)}</span><div style="flex:1;display:flex;align-items:center;gap:8px;margin-inline-start:8px"><div style="flex:1;height:8px;background:#e5e7eb;border-radius:4px"><div style="width:${pct}%;height:100%;border-radius:4px;background:var(--blue);opacity:0.7"></div></div><span style="font-size:13px;font-weight:600;min-width:16px">${count}</span></div></div>`;
         }).join('')}
       </div>
     </div>
@@ -744,7 +991,8 @@ function renderProspects(search = '', statusFilter = '') {
       d.name.toLowerCase().includes(q) ||
       d.city.toLowerCase().includes(q) ||
       d.org.toLowerCase().includes(q) ||
-      d.source.toLowerCase().includes(q)
+      d.source.toLowerCase().includes(q) ||
+      tSource(d.source).toLowerCase().includes(q)
     );
   }
   if (statusFilter) {
@@ -754,16 +1002,16 @@ function renderProspects(search = '', statusFilter = '') {
   const el = document.getElementById('tab-prospects');
   el.innerHTML = `
     <div class="controls">
-      <input type="text" class="search-input" id="search-input" placeholder="Search by name, city, organization, source..." value="${escHtml(search)}">
+      <input type="text" class="search-input" id="search-input" placeholder="${t('searchPlaceholder')}" value="${escHtml(search)}">
       <select class="filter-select" id="status-filter">
-        <option value="">All Statuses</option>
-        ${STATUS_ORDER.map(s => `<option value="${s}" ${statusFilter===s?'selected':''}>${s}</option>`).join('')}
+        <option value="">${t('allStatuses')}</option>
+        ${STATUS_ORDER.map(s => `<option value="${s}" ${statusFilter===s?'selected':''}>${tStatus(s)}</option>`).join('')}
       </select>
     </div>
     <div class="table-wrap">
       <table>
         <thead><tr>
-          <th>Name</th><th>City</th><th>Organization</th><th>Capacity</th><th>Status</th><th>Source</th><th>Interactions</th>
+          <th>${t('colName')}</th><th>${t('colCity')}</th><th>${t('colOrg')}</th><th>${t('colCapacity')}</th><th>${t('colStatus')}</th><th>${t('colSource')}</th><th>${t('colInteractions')}</th>
         </tr></thead>
         <tbody>
           ${filtered.map(d => {
@@ -772,19 +1020,18 @@ function renderProspects(search = '', statusFilter = '') {
               <td style="font-weight:600">${escHtml(d.name)}</td>
               <td>${escHtml(d.city)}</td>
               <td style="font-size:13px;color:var(--text-light)">${escHtml(d.org)}</td>
-              <td><span class="capacity ${CAP_CLASS[d.capacity]}">${d.capacity}</span></td>
-              <td><span class="pill ${STATUS_CLASS[d.status]}">${d.status}</span></td>
-              <td style="font-size:13px">${escHtml(d.source)}</td>
+              <td><span class="capacity ${CAP_CLASS[d.capacity]}">${tCapacity(d.capacity)}</span></td>
+              <td><span class="pill ${STATUS_CLASS[d.status]}">${tStatus(d.status)}</span></td>
+              <td style="font-size:13px">${escHtml(tSource(d.source))}</td>
               <td style="text-align:center">${intCount}</td>
             </tr>`;
           }).join('')}
-          ${filtered.length === 0 ? '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-light)">No prospects match your search</td></tr>' : ''}
+          ${filtered.length === 0 ? `<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-light)">${t('noResults')}</td></tr>` : ''}
         </tbody>
       </table>
     </div>
   `;
 
-  // Wire events
   document.getElementById('search-input').addEventListener('input', e => {
     renderProspects(e.target.value, document.getElementById('status-filter').value);
   });
@@ -806,12 +1053,12 @@ function renderPipeline() {
     ${STATUS_ORDER.map(stage => {
       const donors = DONORS.filter(d => d.status === stage);
       return `<div class="pipeline-col ${STAGE_CLASS[stage]}">
-        <div class="pipeline-header"><span>${stage}</span><span class="count">${donors.length}</span></div>
+        <div class="pipeline-header"><span>${tStatus(stage)}</span><span class="count">${donors.length}</span></div>
         <div class="pipeline-body">
           ${donors.map(d => `<div class="pipeline-card" data-id="${d.id}">
             <div class="name">${escHtml(d.name)}</div>
             <div class="city">${escHtml(d.city)}</div>
-            <div class="cap-line"><span class="capacity ${CAP_CLASS[d.capacity]}">${d.capacity}</span></div>
+            <div class="cap-line"><span class="capacity ${CAP_CLASS[d.capacity]}">${tCapacity(d.capacity)}</span></div>
           </div>`).join('')}
         </div>
       </div>`;
@@ -846,9 +1093,9 @@ function renderActivity() {
           return `<div class="activity-item">
             <div class="activity-icon ${TYPE_CSS[i.type] || ''}">${TYPE_ICONS[i.type] || '\u{1F4CB}'}</div>
             <div class="activity-body">
-              <div class="title"><span class="donor-name">${escHtml(donor.name)}</span> — ${i.type.charAt(0).toUpperCase() + i.type.slice(1)}</div>
-              <div class="summary">${escHtml(i.summary)}</div>
-              <div class="detail">${escHtml(i.details)}</div>
+              <div class="title"><span class="donor-name">${escHtml(donor.name)}</span> \u2014 ${tType(i.type)}</div>
+              <div class="summary">${escHtml(loc(i.summary))}</div>
+              <div class="detail">${escHtml(loc(i.details))}</div>
             </div>
           </div>`;
         }).join('')}
@@ -874,35 +1121,35 @@ function openDetail(donorId) {
 
   document.getElementById('detail-body').innerHTML = `
     <div class="detail-section">
-      <h4>Profile</h4>
+      <h4>${t('profile')}</h4>
       <div class="detail-info-grid">
-        <div class="detail-info-item"><div class="lbl">Status</div><div class="val"><span class="pill ${STATUS_CLASS[d.status]}">${d.status}</span></div></div>
-        <div class="detail-info-item"><div class="lbl">Capacity</div><div class="val"><span class="capacity ${CAP_CLASS[d.capacity]}">${d.capacity}</span></div></div>
-        <div class="detail-info-item"><div class="lbl">Source</div><div class="val">${escHtml(d.source)}</div></div>
-        <div class="detail-info-item"><div class="lbl">Interactions</div><div class="val">${ints.length}</div></div>
-        <div class="detail-info-item"><div class="lbl">Email</div><div class="val" style="font-size:13px">${escHtml(d.email)}</div></div>
-        <div class="detail-info-item"><div class="lbl">Phone</div><div class="val">${escHtml(d.phone)}</div></div>
+        <div class="detail-info-item"><div class="lbl">${t('colStatus')}</div><div class="val"><span class="pill ${STATUS_CLASS[d.status]}">${tStatus(d.status)}</span></div></div>
+        <div class="detail-info-item"><div class="lbl">${t('colCapacity')}</div><div class="val"><span class="capacity ${CAP_CLASS[d.capacity]}">${tCapacity(d.capacity)}</span></div></div>
+        <div class="detail-info-item"><div class="lbl">${t('colSource')}</div><div class="val">${escHtml(tSource(d.source))}</div></div>
+        <div class="detail-info-item"><div class="lbl">${t('colInteractions')}</div><div class="val">${ints.length}</div></div>
+        <div class="detail-info-item"><div class="lbl">${t('email')}</div><div class="val" style="font-size:13px">${escHtml(d.email)}</div></div>
+        <div class="detail-info-item"><div class="lbl">${t('phone')}</div><div class="val">${escHtml(d.phone)}</div></div>
       </div>
     </div>
     <div class="detail-section">
-      <h4>Interests</h4>
-      <div>${d.interests.map(t => `<span class="tag">${escHtml(t)}</span>`).join(' ')}</div>
+      <h4>${t('interests')}</h4>
+      <div>${d.interests.map(tg => `<span class="tag">${escHtml(tg)}</span>`).join(' ')}</div>
     </div>
     <div class="detail-section">
-      <h4>Notes</h4>
-      <div class="detail-notes">${escHtml(d.notes)}</div>
+      <h4>${t('notes')}</h4>
+      <div class="detail-notes">${escHtml(loc(d.notes))}</div>
     </div>
     <div class="detail-section">
-      <h4>Interaction History (${ints.length})</h4>
+      <h4>${t('interactionHistory')} (${ints.length})</h4>
       ${ints.length ? `<div class="timeline">
         ${ints.map(i => `<div class="tl-item">
           <div class="tl-dot"></div>
           <div class="tl-date">${formatDate(i.date)}</div>
-          <div class="tl-type" style="color:var(--blue)">${TYPE_ICONS[i.type] || ''} ${i.type}</div>
-          <div class="tl-summary">${escHtml(i.summary)}</div>
-          <div class="tl-details">${escHtml(i.details)}</div>
+          <div class="tl-type" style="color:var(--blue)">${TYPE_ICONS[i.type] || ''} ${tType(i.type)}</div>
+          <div class="tl-summary">${escHtml(loc(i.summary))}</div>
+          <div class="tl-details">${escHtml(loc(i.details))}</div>
         </div>`).join('')}
-      </div>` : '<div style="color:var(--text-light);font-size:13px">No interactions recorded yet</div>'}
+      </div>` : `<div style="color:var(--text-light);font-size:13px">${t('noInteractions')}</div>`}
     </div>
   `;
 
@@ -925,6 +1172,39 @@ function switchTab(tabName) {
 }
 
 // ═══════════════════════════════════════════════════
+// LANGUAGE TOGGLE
+// ═══════════════════════════════════════════════════
+
+function applyLang() {
+  const dir = LANG === 'he' ? 'rtl' : 'ltr';
+  document.documentElement.lang = LANG === 'he' ? 'he' : 'en';
+  document.documentElement.dir = dir;
+
+  // Update header
+  document.getElementById('header-title').textContent = t('headerTitle');
+  document.getElementById('header-subtitle').textContent = t('headerSubtitle');
+  document.getElementById('lang-btn').textContent = t('langBtnLabel');
+
+  // Update tab buttons
+  document.getElementById('tab-btn-dashboard').textContent = t('tabDashboard');
+  document.getElementById('tab-btn-prospects').textContent = t('tabProspects');
+  document.getElementById('tab-btn-pipeline').textContent = t('tabPipeline');
+  document.getElementById('tab-btn-activity').textContent = t('tabActivity');
+
+  // Re-render all tabs
+  renderDashboard();
+  renderProspects();
+  renderPipeline();
+  renderActivity();
+  closeDetail();
+}
+
+function toggleLang() {
+  LANG = LANG === 'he' ? 'en' : 'he';
+  applyLang();
+}
+
+// ═══════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════
 
@@ -932,15 +1212,13 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => switchTab(btn.dataset.tab));
 });
 
+document.getElementById('lang-btn').addEventListener('click', toggleLang);
 document.getElementById('detail-close').addEventListener('click', closeDetail);
 document.getElementById('overlay').addEventListener('click', closeDetail);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDetail(); });
 
-// Render all tabs on load
-renderDashboard();
-renderProspects();
-renderPipeline();
-renderActivity();
+// Start in Hebrew
+applyLang();
 </script>
 </body>
 </html>
